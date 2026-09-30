@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import ServicePage from '@/layouts/ServicePage.astro';
+const authors = await getCollection('authors');
+const description =
+  'The people who research, write and review our calculators, with their roles and qualifications. Money and health pages have credentialed reviewers.';
+---
+
+<ServicePage title="Authors and reviewers" {description} path="/authors/" h1="Authors and reviewers" updated={new Date('2026-09-30')}>
+  <p>Every page names its author and, for money and health topics, its professional reviewer. Here is who they are.</p>
+  {
+    authors.map((a) => (
+      <section class="mt-6 rounded-card border border-border bg-surface p-5 not-prose" id={a.id}>
+        <h2 class="text-xl font-semibold m-0">{a.data.name}</h2>
+        <p class="text-sm text-muted mt-0.5 mb-2">{a.data.role}{a.data.credentials ? ` · ${a.data.credentials}` : ''}</p>
+        <p class="m-0">{a.data.bio}</p>
+        {a.data.placeholder && <p class="text-xs text-warn mt-2 m-0">Individual author profiles are being added.</p>}
+        {a.data.sameAs.length > 0 && (
+          <ul class="flex gap-3 mt-2 list-none m-0 p-0 text-sm">
+            {a.data.sameAs.map((u) => <li><a href={u} rel="me noopener" target="_blank">{new URL(u).hostname}</a></li>)}
+          </ul>
+        )}
+      </section>
+    ))
+  }
+</ServicePage>

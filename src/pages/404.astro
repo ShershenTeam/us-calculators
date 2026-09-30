@@ -1,0 +1,29 @@
+---
+import Base from '@/layouts/Base.astro';
+import SearchBox from '@/components/SearchBox.astro';
+import { registry } from '@/lib/registry';
+
+const popular = registry.published('en').slice(0, 8);
+const description =
+  'The page you asked for does not exist or has moved. Search our calculators or pick a popular one below to keep going without losing your place.';
+---
+
+<Base title="Page not found (404)" {description} path="/404/" noindex mainClass="max-w-3xl">
+  <h1 class="text-3xl md:text-4xl font-bold mt-6">We couldn't find that page</h1>
+  <p class="text-muted mt-2">The address may have a typo, or the calculator has moved. Try a search:</p>
+  <div class="mt-4"><SearchBox id="notfound-search" size="lg" autofocus /></div>
+
+  {
+    popular.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold mb-3">Popular calculators</h2>
+        <ul class="grid gap-3 sm:grid-cols-2 list-none m-0 p-0">
+          {popular.map((c) => (
+            <li><a href={`/${c.slugs.en}/`} class="block rounded-card border border-border bg-surface p-4 no-underline hover:border-accent"><span class="font-semibold text-text">{c.name}</span><span class="block text-sm text-muted mt-1">{c.blurb}</span></a></li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <p class="mt-8"><a href="/">← Back to the home page</a></p>
+</Base>

@@ -1,0 +1,26 @@
+---
+/**
+ * Spanish (es-US) calculator pages. Prepared from day one (docs/02-languages.md),
+ * rendered only for calculators with `status.es === 'published'` — none before month 5.
+ */
+import type { GetStaticPaths } from 'astro';
+import { getEntry } from 'astro:content';
+import CalculatorPage from '@/layouts/CalculatorPage.astro';
+import { registry } from '@/lib/registry';
+
+export const getStaticPaths = (() =>
+  registry.published('es').map((meta) => ({ params: { slug: meta.slugs.es! }, props: { id: meta.id } }))) satisfies GetStaticPaths;
+
+const { id } = Astro.props as { id: string };
+const meta = registry.byId(id);
+const entry = await getEntry('calculators', `es/${meta.slugs.es}`);
+if (!entry) throw new Error(`Missing content: src/content/calculators/es/${meta.slugs.es}.mdx`);
+
+const islands = import.meta.glob<{ default: (props: Record<string, unknown>) => unknown }>('../../calculators/*/island.astro', { eager: true });
+const Island = islands[`../../calculators/${meta.id}/island.astro`]?.default;
+if (!Island) throw new Error(`${meta.id}: missing island.astro`);
+---
+
+<CalculatorPage {meta} {entry} locale="es">
+  <Island locale="es" />
+</CalculatorPage>

@@ -1,0 +1,41 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro';
+import { site } from '@/data/site';
+const description =
+  'What data this site collects, how cookies and advertising partners are used, how long data is kept, and your rights under U.S. state privacy laws.';
+---
+
+<ServicePage title="Privacy policy" {description} path="/privacy/" h1="Privacy policy" updated={new Date('2026-09-30')}>
+  <p>This policy explains what {site.name} collects when you use the site and how it is used. In short: the calculators run in your browser, your inputs stay on your device unless you share a link, and we use standard analytics and advertising services.</p>
+
+  <h2>Information we collect</h2>
+  <ul>
+    <li><strong>Calculator inputs</strong> are processed in your browser. They are not sent to our servers. If you use “Share”, the inputs are encoded in the link you create; anyone with the link can see them.</li>
+    <li><strong>Usage data:</strong> pages viewed, approximate location (country/region), device and browser type, referring site, and interactions such as “calculate”, “copy” or “print”. Collected through a privacy-focused analytics service and, where enabled, Google Analytics.</li>
+    <li><strong>Contact messages:</strong> your email address and message when you write to us.</li>
+    <li><strong>Local storage:</strong> some calculators remember your last inputs or preferences on your device. This data never leaves your browser and you can clear it in your browser settings.</li>
+  </ul>
+
+  <h2>Cookies and advertising</h2>
+  <p>We show ads through Google AdSense and may work with other advertising partners. These partners may use cookies or similar identifiers to show ads based on your visits to this and other sites, and to measure ad performance. You can control personalized advertising through <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Ads Settings</a>, the <a href="https://optout.aboutads.info" rel="noopener" target="_blank">Digital Advertising Alliance</a>, and through the consent settings shown on your first visit where required.</p>
+
+  <h2>How we use information</h2>
+  <ul>
+    <li>To operate the site, fix errors and understand which calculators are useful.</li>
+    <li>To show and measure advertising that funds the site.</li>
+    <li>To respond to your messages.</li>
+  </ul>
+  <p>We do not sell personal information for money. Some advertising cookies may count as “sharing” under California law; you can opt out on the <a href="/do-not-sell/">Do Not Sell or Share My Personal Information</a> page.</p>
+
+  <h2>Retention</h2>
+  <p>Analytics data is kept in aggregated form. Contact emails are kept as long as needed to resolve the request and for up to two years afterwards.</p>
+
+  <h2>Your rights</h2>
+  <p>Depending on where you live (California, Colorado, Connecticut, Virginia, Utah, Texas, Oregon and other states with privacy laws, or the EU/UK), you may have the right to know what personal information we hold, to have it deleted, to correct it, and to opt out of targeted advertising. Send requests to <a href={`mailto:${site.email}`}>{site.email}</a>. We will not discriminate against you for exercising these rights.</p>
+
+  <h2>Children</h2>
+  <p>The site is not directed to children under 13 and we do not knowingly collect their personal information.</p>
+
+  <h2>Changes</h2>
+  <p>We will post any changes on this page and update the date above.</p>
+</ServicePage>

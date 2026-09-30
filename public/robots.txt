@@ -1,0 +1,21 @@
+# docs/07-seo-checklist.md A1 + A6
+User-agent: *
+Allow: /
+Disallow: /search/
+Disallow: /registry.json
+
+# Search engines and AI search engines that cite sources and send visits.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Sitemap URL is domain-relative on purpose; update when SITE_URL is final.
+Sitemap: https://example.com/sitemap-index.xml

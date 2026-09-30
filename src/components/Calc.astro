@@ -1,0 +1,31 @@
+---
+/**
+ * Contextual link to another calculator from MDX:
+ *   <Calc slug="cubic-yards-calculator">cubic yards</Calc>
+ * Unknown slugs throw → the build fails (no broken links, Constitution III).
+ * Slugs that exist but are still drafts render as plain text with a build warning,
+ * and become links automatically when the target is published.
+ */
+import { registry } from '@/lib/registry';
+
+interface Props {
+  slug: string;
+  locale?: 'en' | 'es';
+}
+const { slug, locale = 'en' } = Astro.props;
+const link = registry.linkBySlug(slug, locale);
+const meta = registry.byId(link.id);
+const published = (meta.status[locale] ?? 'draft') === 'published';
+if (!published) {
+  console.warn(`[calc-link] <Calc slug="${slug}"> target is a draft; rendered as text (${Astro.url.pathname})`);
+}
+const hasChildren = Astro.slots.has('default');
+---
+
+{
+  published ? (
+    <a href={link.url}>{hasChildren ? <slot /> : link.name}</a>
+  ) : (
+    <span data-calc-draft={slug}>{hasChildren ? <slot /> : link.name}</span>
+  )
+}

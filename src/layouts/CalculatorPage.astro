@@ -1,0 +1,116 @@
+---
+/**
+ * Calculator page template — block order from docs/03-architecture.md §5:
+ * breadcrumbs · H1 · one-line intro · CALCULATOR · ad slot · next steps ·
+ * MDX content · FAQ · related · sources/author/updated.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { render, getEntry } from 'astro:content';
+import Base from './Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import AdSlot from '@/components/AdSlot.astro';
+import NextSteps from '@/components/NextSteps.astro';
+import FAQ from '@/components/FAQ.astro';
+import RelatedCards from '@/components/RelatedCards.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import TableWrap from '@/components/TableWrap.astro';
+import Calc from '@/components/Calc.astro';
+import { registry } from '@/lib/registry';
+import { jsonLd, plainText } from '@/lib/seo';
+import type { CalculatorMeta, Locale } from '@/lib/define-calculator';
+
+interface Props {
+  meta: CalculatorMeta;
+  entry: CollectionEntry<'calculators'>;
+  locale?: Locale;
+}
+const { meta, entry, locale = 'en' } = Astro.props;
+const { Content } = await render(entry);
+const path = registry.url(meta.id, locale);
+const crumbs = registry.breadcrumbs(meta.id, locale);
+const related = registry.relatedOf(meta.id, locale);
+const next = registry.nextOf(meta.id, locale);
+const author = await getEntry('authors', entry.data.author);
+if (!author) throw new Error(`${entry.id}: unknown author "${entry.data.author}"`);
+const reviewer = entry.data.reviewer ? await getEntry('authors', entry.data.reviewer) : undefined;
+if (entry.data.reviewer && !reviewer) throw new Error(`${entry.id}: unknown reviewer "${entry.data.reviewer}"`);
+
+const updated = entry.data.updated;
+const updatedIso = updated.toISOString().slice(0, 10);
+const updatedHuman = updated.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const ld = [
+  jsonLd.webApplication({
+    name: meta.name,
+    url: path,
+    description: entry.data.description,
+    applicationCategory: meta.applicationCategory,
+    updated,
+    author: { name: author.data.name, url: '/authors/' },
+  }),
+  jsonLd.breadcrumbs(crumbs),
+  jsonLd.faqPage(entry.data.faq.map((f) => ({ q: f.q, a: plainText(f.a) }))),
+];
+---
+
+<Base
+  title={entry.data.title}
+  description={entry.data.description}
+  {path}
+  alternates={registry.hreflang(meta.id)}
+  ogImage={`/og/${meta.slugs[locale] ?? meta.slugs.en}.png`}
+  ogType="article"
+  {locale}
+>
+  <Fragment slot="head">
+    <JsonLd data={ld} />
+  </Fragment>
+
+  <Breadcrumbs crumbs={crumbs} />
+
+  <article>
+    <header class="mt-3 mb-4">
+      <h1 class="text-[1.85rem] md:text-4xl font-bold leading-tight">{entry.data.h1}</h1>
+      <p class="text-muted mt-1.5 text-[1.05rem] max-w-3xl">{entry.data.intro}</p>
+    </header>
+
+    {/* Calculator island — first screen, nothing between the H1 and this block (docs/06 §1). */}
+    <section aria-label={`${meta.name} inputs and result`} data-calculator={meta.id} class="rounded-card border border-border bg-surface p-4 md:p-6 shadow-sm">
+      <slot />
+    </section>
+
+    <AdSlot id="after-result" />
+
+    <NextSteps items={next} />
+
+    <div class="prose mt-10">
+      <Content components={{ table: TableWrap, Calc }} />
+    </div>
+
+    <FAQ items={entry.data.faq} />
+
+    <RelatedCards items={related} />
+
+    <footer class="mt-10 pt-6 border-t border-border text-sm text-muted grid gap-4 md:grid-cols-2">
+      <section>
+        <h2 class="text-base font-semibold text-text mb-2">Sources</h2>
+        <ol class="list-decimal ml-5 space-y-1">
+          {entry.data.sources.map((s) => (
+            <li>
+              <a href={s.url} rel="noopener nofollow" target="_blank">{s.name}</a>
+              {s.date && <span> (checked {s.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })})</span>}
+            </li>
+          ))}
+        </ol>
+      </section>
+      <section>
+        <p class="m-0">
+          <strong class="text-text">Written by</strong> <a href="/authors/">{author.data.name}</a>, {author.data.role}.
+          {reviewer && <span> <strong class="text-text">Reviewed by</strong> <a href="/authors/">{reviewer.data.name}</a>{reviewer.data.credentials ? `, ${reviewer.data.credentials}` : ''}.</span>}
+        </p>
+        <p class="m-0 mt-2"><strong class="text-text">Last updated</strong> <time datetime={updatedIso}>{updatedHuman}</time>. Formulas verified as described in our <a href="/methodology/">methodology</a>.</p>
+        {entry.data.ymyl && <p class="mt-2 m-0 text-xs">This tool is for informational purposes only and is not financial, legal or medical advice.</p>}
+      </section>
+    </footer>
+  </article>
+</Base>

@@ -1,0 +1,18 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro';
+import { site } from '@/data/site';
+const description =
+  'Report a wrong result, suggest a calculator, ask about advertising or request a correction. We read every message and fix confirmed errors quickly.';
+---
+
+<ServicePage title="Contact us" {description} path="/contact/" h1="Contact" updated={new Date('2026-09-30')}>
+  <p>Email is the fastest way to reach us: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+  <h2>What to include</h2>
+  <ul>
+    <li><strong>Wrong result:</strong> the page address, the inputs you used (or the shared link from the “Share” button), the result you got and the result you expected, with a source if you have one.</li>
+    <li><strong>Calculator request:</strong> what you want to work out and what you tried elsewhere that did not help.</li>
+    <li><strong>Advertising or partnerships:</strong> a short description of your company and the pages you are interested in.</li>
+    <li><strong>Privacy requests</strong> (access, deletion, do-not-sell): see the <a href="/privacy/">privacy policy</a> and <a href="/do-not-sell/">Do Not Sell or Share</a> pages.</li>
+  </ul>
+  <p>We usually answer within three business days. Confirmed errors are corrected and the page's “Last updated” date changes when the fix goes live.</p>
+</ServicePage>

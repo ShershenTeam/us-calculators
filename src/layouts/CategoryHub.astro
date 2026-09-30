@@ -1,0 +1,80 @@
+---
+/**
+ * Category hub (docs/03 §4): intro, all published calculators of the category
+ * (including alsoIn), optional subgroups, FAQ, breadcrumbs.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import Base from './Base.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import FAQ from '@/components/FAQ.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import TableWrap from '@/components/TableWrap.astro';
+import { registry } from '@/lib/registry';
+import { jsonLd, plainText } from '@/lib/seo';
+import type { Category } from '@/data/categories';
+
+interface Props {
+  category: Category;
+  entry: CollectionEntry<'categories'>;
+}
+const { category, entry } = Astro.props;
+const { Content } = await render(entry);
+const path = `/${category.slug}/`;
+const calculators = registry.byCategory(category.id, 'en');
+
+const grouped = category.subgroups
+  ? [
+      ...category.subgroups
+        .map((s) => ({ name: s.name, items: calculators.filter((c) => c.subgroup === s.id) }))
+        .filter((g) => g.items.length > 0),
+      { name: 'Other', items: calculators.filter((c) => !c.subgroup) },
+    ].filter((g) => g.items.length > 0)
+  : [{ name: '', items: calculators }];
+
+const crumbs = [
+  { name: 'Home', url: '/' },
+  { name: category.name, url: path },
+];
+const faqLd = jsonLd.faqPage(entry.data.faq.map((f) => ({ q: f.q, a: plainText(f.a) })));
+---
+
+<Base title={entry.data.title} description={entry.data.description} {path} ogImage={`/og/hub-${category.slug}.png`}>
+  <Fragment slot="head">
+    <JsonLd data={[jsonLd.breadcrumbs(crumbs), faqLd]} />
+  </Fragment>
+
+  <Breadcrumbs crumbs={crumbs} />
+  <header class="mt-4 mb-6">
+    <h1 class="text-3xl md:text-4xl font-bold leading-tight">{entry.data.h1}</h1>
+    <p class="text-lg text-muted mt-2 max-w-3xl">{entry.data.intro}</p>
+  </header>
+
+  {
+    grouped.map((g) => (
+      <section class="mb-8">
+        {g.name && <h2 class="text-xl font-semibold mb-3">{g.name}</h2>}
+        {g.items.length === 0 ? (
+          <p class="text-muted">Calculators for this category are being prepared.</p>
+        ) : (
+          <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none m-0 p-0">
+            {g.items.map((c) => (
+              <li>
+                <a href={`/${c.slugs.en}/`} class="block h-full rounded-card border border-border bg-surface p-4 no-underline hover:border-accent hover:shadow-sm transition">
+                  <span class="block font-semibold text-text">{c.name}</span>
+                  <span class="block text-sm text-muted mt-1">{c.blurb}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))
+  }
+
+  <div class="prose">
+    <Content components={{ table: TableWrap }} />
+  </div>
+
+  <FAQ items={entry.data.faq} />
+</Base>

@@ -1,0 +1,84 @@
+---
+/**
+ * Home: search + categories + popular calculators (docs/03 §2).
+ * The full basic calculator planned for the home page arrives with the Math cluster (stage F).
+ */
+import Base from '@/layouts/Base.astro';
+import JsonLd from '@/components/JsonLd.astro';
+import SearchBox from '@/components/SearchBox.astro';
+import { registry } from '@/lib/registry';
+import { jsonLd } from '@/lib/seo';
+import { site } from '@/data/site';
+
+const groups = registry.categoriesWithContent('en');
+const published = registry.published('en');
+const title = `Free Calculators, Converters & Quick Answers | ${site.name}`;
+const description =
+  'Fast, mobile-first calculators for construction materials, work hours, percentages, unit conversions and dates. Every formula is tested against sources.';
+---
+
+<Base {title} {description} path="/">
+  <Fragment slot="head">
+    <JsonLd data={[jsonLd.organization(), jsonLd.webSite()]} />
+  </Fragment>
+
+  <section class="py-8 md:py-14 text-center">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight tracking-tight">Calculators that give the answer before you finish typing</h1>
+    <p class="text-lg text-muted mt-3 max-w-2xl mx-auto">{site.tagline} Results update as you type, work on your phone, and show exactly how they were calculated.</p>
+    <div class="max-w-xl mx-auto mt-6"><SearchBox id="home-search" size="lg" /></div>
+  </section>
+
+  <section aria-labelledby="categories-heading" class="mt-4">
+    <h2 id="categories-heading" class="text-2xl font-bold mb-4">Browse by category</h2>
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 list-none m-0 p-0">
+      {
+        groups.map(({ category, calculators }) => (
+          <li class="rounded-card border border-border bg-surface p-5">
+            <h3 class="text-lg font-semibold m-0">
+              {calculators.length > 0 ? (
+                <a href={`/${category.slug}/`} class="text-text no-underline hover:text-accent">{category.name}</a>
+              ) : (
+                <span class="text-text">{category.name}</span>
+              )}
+            </h3>
+            <p class="text-sm text-muted mt-1 mb-3">{category.blurb}</p>
+            {calculators.length > 0 ? (
+              <ul class="list-none m-0 p-0 space-y-1.5">
+                {calculators.slice(0, 5).map((c) => (
+                  <li><a href={`/${c.slugs.en}/`} class="no-underline hover:underline">{c.name}</a></li>
+                ))}
+                {calculators.length > 5 && <li><a href={`/${category.slug}/`} class="font-medium">All {category.shortName} →</a></li>}
+              </ul>
+            ) : (
+              <p class="text-sm text-muted m-0">Coming soon.</p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {
+    published.length > 0 && (
+      <section aria-labelledby="popular-heading" class="mt-12">
+        <h2 id="popular-heading" class="text-2xl font-bold mb-4">Popular calculators</h2>
+        <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 list-none m-0 p-0">
+          {published.slice(0, 8).map((c) => (
+            <li>
+              <a href={`/${c.slugs.en}/`} class="block h-full rounded-card border border-border bg-surface p-4 no-underline hover:border-accent transition">
+                <span class="block font-semibold text-text">{c.name}</span>
+                <span class="block text-sm text-muted mt-1">{c.blurb}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class="mt-14 grid gap-6 md:grid-cols-3 text-sm">
+    <div><h2 class="text-base font-semibold mb-1">Checked against primary sources</h2><p class="m-0 text-muted">Unit factors from NIST, labor rules from the U.S. Department of Labor, material data from manufacturers. Each example becomes an automated test. <a href="/methodology/">How we test</a>.</p></div>
+    <div><h2 class="text-base font-semibold mb-1">Built for the phone in your hand</h2><p class="m-0 text-muted">The calculator is the first thing on the screen, the result updates as you type, and you can copy, share or print it.</p></div>
+    <div><h2 class="text-base font-semibold mb-1">No sign-up, no paywall</h2><p class="m-0 text-muted">Free to use. Ads pay for the site; they never sit between the title and the calculator. <a href="/editorial-policy/">Editorial policy</a>.</p></div>
+  </section>
+</Base>

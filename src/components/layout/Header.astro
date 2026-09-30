@@ -1,0 +1,90 @@
+---
+/**
+ * Header (docs/03 §3): logo · always-visible search · category menu.
+ * Desktop: category links with hover/focus mega-menus. Mobile: <details> burger. No JS.
+ */
+import { site, nav } from '@/data/site';
+import { registry } from '@/lib/registry';
+import SearchBox from '@/components/SearchBox.astro';
+
+const groups = registry.categoriesWithContent('en').filter((g) => g.calculators.length > 0);
+const primary = groups.filter((g) => (nav.headerCategoryIds as readonly string[]).includes(g.category.id));
+const more = groups.filter((g) => !(nav.headerCategoryIds as readonly string[]).includes(g.category.id));
+---
+
+<header class="border-b border-border bg-surface/95 backdrop-blur sticky top-0 z-40">
+  <div class="mx-auto max-w-6xl px-4">
+    <div class="flex items-center gap-3 h-16">
+      <a href="/" class="flex items-center gap-2 no-underline text-text font-bold text-lg shrink-0" aria-label={`${site.name} home`}>
+        <img src="/favicon.svg" alt="" width="28" height="28" />
+        <span class="hidden sm:inline">{site.name}</span>
+      </a>
+
+      <div class="flex-1 max-w-xl"><SearchBox /></div>
+
+      <details class="md:hidden relative">
+        <summary class="list-none cursor-pointer h-12 w-12 -mr-2 grid place-items-center rounded-full hover:bg-surface-2" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </summary>
+        <nav aria-label="Categories" class="absolute right-0 top-14 w-[min(92vw,22rem)] rounded-card border border-border bg-surface shadow-lg p-2 max-h-[75vh] overflow-y-auto">
+          {
+            groups.map((g) => (
+              <details class="rounded-lg">
+                <summary class="list-none cursor-pointer flex items-center justify-between min-h-12 px-3 font-semibold">
+                  {g.category.name}<span aria-hidden="true" class="text-muted">›</span>
+                </summary>
+                <ul class="list-none m-0 p-0 pb-2">
+                  {g.calculators.slice(0, 8).map((c) => (
+                    <li><a href={`/${c.slugs.en}/`} class="block px-5 py-2.5 text-text no-underline hover:bg-surface-2 rounded-md">{c.name}</a></li>
+                  ))}
+                  <li><a href={`/${g.category.slug}/`} class="block px-5 py-2.5 font-medium">All {g.category.shortName} →</a></li>
+                </ul>
+              </details>
+            ))
+          }
+        </nav>
+      </details>
+    </div>
+
+    <nav aria-label="Categories" class="hidden md:block">
+      <ul class="flex gap-1 list-none m-0 p-0 -mx-2">
+        {
+          primary.map((g) => (
+            <li class="group relative">
+              <a href={`/${g.category.slug}/`} class="inline-flex items-center h-11 px-3 text-text no-underline font-medium rounded-md hover:bg-surface-2 group-focus-within:bg-surface-2">
+                {g.category.shortName}
+              </a>
+              <div class="mega absolute left-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                <div class="w-[min(90vw,40rem)] rounded-card border border-border bg-surface shadow-xl p-4">
+                  <p class="m-0 mb-2 text-sm text-muted">{g.category.blurb}</p>
+                  <ul class="grid grid-cols-2 gap-x-6 list-none m-0 p-0">
+                    {g.calculators.slice(0, 10).map((c) => (
+                      <li><a href={`/${c.slugs.en}/`} class="block py-1.5 text-text no-underline hover:text-accent">{c.name}</a></li>
+                    ))}
+                  </ul>
+                  <a href={`/${g.category.slug}/`} class="inline-block mt-3 font-medium">All {g.category.name} →</a>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+        {
+          more.length > 0 && (
+            <li class="group relative">
+              <button type="button" class="inline-flex items-center h-11 px-3 font-medium rounded-md hover:bg-surface-2" aria-haspopup="true">More ▾</button>
+              <div class="absolute left-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                <ul class="w-64 rounded-card border border-border bg-surface shadow-xl p-2 list-none m-0">
+                  {more.map((g) => (
+                    <li><a href={`/${g.category.slug}/`} class="block px-3 py-2.5 text-text no-underline hover:bg-surface-2 rounded-md">{g.category.name}</a></li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          )
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

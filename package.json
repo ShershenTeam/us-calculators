@@ -1,0 +1,43 @@
+{
+  "name": "us-calculators",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Static site of online calculators, unit converters and quick answers for the US market.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/pagefind.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "seo-lint": "node scripts/seo-lint.mjs",
+    "links": "node scripts/link-report.mjs",
+    "new": "node scripts/new-calculator.mjs",
+    "verify": "npm run check && npm test && npm run build && npm run seo-lint && npm run links"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^8.0.2",
+    "@astrojs/preact": "^6.0.5",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.5",
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@fontsource/inter": "^5.2.5",
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "node-html-parser": "^7.0.1",
+    "pagefind": "^1.5.2",
+    "satori": "^0.33.5",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.0",
+    "vitest": "^5.0.3"
+  }
+}

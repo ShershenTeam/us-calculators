@@ -1,0 +1,23 @@
+---
+/**
+ * Category hubs. A hub is built only when it has at least one published calculator,
+ * so the index never receives an empty "coming soon" page (Constitution VIII).
+ */
+import type { GetStaticPaths } from 'astro';
+import { getEntry } from 'astro:content';
+import CategoryHub from '@/layouts/CategoryHub.astro';
+import { categories, categoryBySlug } from '@/data/categories';
+import { registry } from '@/lib/registry';
+
+export const getStaticPaths = (() =>
+  categories
+    .filter((c) => c.published && registry.byCategory(c.id, 'en').length > 0)
+    .map((c) => ({ params: { category: c.slug } }))) satisfies GetStaticPaths;
+
+const category = categoryBySlug(Astro.params.category!)!;
+const entry = await getEntry('categories', `en/${category.slug}`);
+if (!entry) throw new Error(`Missing hub content: src/content/categories/en/${category.slug}.mdx`);
+if (entry.data.categoryId !== category.id) throw new Error(`${entry.id}: categoryId mismatch`);
+---
+
+<CategoryHub {category} {entry} />

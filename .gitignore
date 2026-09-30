@@ -1,2 +1,22 @@
+# secrets
 .env
+.env.*
+!.env.example
+
+# build output
+dist/
+.astro/
+node_modules/
+
+# tests
+test-results/
+playwright-report/
+coverage/
+
+# python helpers in research/
 __pycache__/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.~lock.*#

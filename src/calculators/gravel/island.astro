@@ -1,0 +1,12 @@
+---
+/**
+ * Static wrapper so Astro can hydrate the Preact island (dynamic framework components
+ * cannot carry client:* directives). Every calculator folder has one of these.
+ */
+import GravelCalculator from './GravelCalculator';
+interface Props {
+  locale?: 'en' | 'es';
+}
+---
+
+<GravelCalculator client:load />

@@ -1,0 +1,24 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro';
+import { site } from '@/data/site';
+const description =
+  'Who builds these calculators, why they exist, and the rules we follow: primary sources, tested formulas, mobile-first design, no ads above the tool.';
+---
+
+<ServicePage title={`About ${site.name}`} {description} path="/about/" h1={`About ${site.name}`} updated={new Date('2026-09-30')}>
+  <p>{site.name} is a collection of free online calculators, unit converters and quick answers built for people in the United States: homeowners planning a project, hourly workers checking a paycheck, students, and small-business owners.</p>
+  <h2>What makes a calculator here different</h2>
+  <ul>
+    <li><strong>The answer comes first.</strong> Every page opens with a worked example and the result updates as you type. No “Calculate” button, no scrolling past ads.</li>
+    <li><strong>Formulas come from primary sources.</strong> Unit factors from NIST, labor rules from the U.S. Department of Labor, material densities from manufacturers and DOT specifications. Each source is listed at the bottom of the page.</li>
+    <li><strong>Every formula is tested.</strong> The reference examples you see in the text are also automated tests that run before any change goes live. See our <a href="/methodology/">methodology</a>.</li>
+    <li><strong>Built for your phone.</strong> Big touch targets, the right keyboard for each field, a sticky result on long forms, and pages that work offline once loaded.</li>
+    <li><strong>You can take the result with you.</strong> Copy it, share a link that restores your inputs, print a clean sheet, or export a CSV.</li>
+  </ul>
+  <h2>How the site makes money</h2>
+  <p>Display advertising. Ads have fixed, reserved space so the page never jumps, and they never appear between the heading and the calculator. We do not sell your data; see the <a href="/privacy/">privacy policy</a>.</p>
+  <h2>Who is behind it</h2>
+  <p>The site is run by a small independent team. Author and reviewer profiles are on the <a href="/authors/">Authors</a> page. Financial and health calculators are reviewed by qualified professionals before publication, as described in the <a href="/editorial-policy/">editorial policy</a>.</p>
+  <h2>Found a mistake?</h2>
+  <p>Tell us on the <a href="/contact/">contact page</a>. Corrections are made within a few days and the page's “Last updated” date changes when they go live.</p>
+</ServicePage>

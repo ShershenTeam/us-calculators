@@ -1,0 +1,13 @@
+{
+  "name": "Calc Site — Calculators & Converters",
+  "short_name": "Calc Site",
+  "description": "Free calculators, unit converters and quick answers for the U.S.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#0f6e56",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

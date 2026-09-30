@@ -1,0 +1,127 @@
+---
+calculatorId: gravel
+locale: en
+title: "Gravel Calculator – Yards, Tons & Bags for Any Area"
+description: "Find how much gravel you need in cubic yards, tons and bags. Add several areas, pick the gravel type, include compaction and see the cost instantly."
+h1: "Gravel Calculator"
+intro: "Enter the size of each area and its depth to get the gravel you need in cubic yards, tons and bags — for one area or several, with a waste allowance built in."
+ogTitle: "Gravel Calculator: yards, tons & bags"
+author: editorial-team
+ymyl: false
+updated: 2026-09-30
+sources:
+  - name: "NIST Special Publication 811 — Appendix B, conversion factors (foot, yard, pound, short ton)"
+    url: "https://www.nist.gov/pml/special-publication-811"
+    date: 2026-09-30
+  - name: "Louisiana OSP aggregate specification — #57 stone unit weight per ASTM C29 / AASHTO T19 (81 lb/ft³ loose, 92 lb/ft³ rodded)"
+    url: "https://wwwcfprd.doa.louisiana.gov/osp/lapac/agency/pdf/8616800-02.pdf"
+    date: 2026-09-30
+  - name: "Inch Calculator — material densities in tons per cubic yard (supplier cross-check)"
+    url: "https://www.inchcalculator.com/gravel-calculator/"
+    date: 2026-09-30
+  - name: "CalculatorSoup — gravel densities by type in lb/yd³ (supplier cross-check)"
+    url: "https://www.calculatorsoup.com/calculators/construction/gravel-calculator.php"
+    date: 2026-09-30
+faq:
+  - q: "How much does a cubic yard of gravel weigh?"
+    a: "Between about 2,400 and 3,400 lb (1.2–1.7 U.S. tons) depending on the stone. Crushed stone and river rock are close to 2,800 lb (1.4 tons); pea gravel about 2,700 lb; dense-graded road base about 3,400 lb; lava rock only about 1,400 lb. The calculator shows the density it uses and lets you change it."
+  - q: "How many square feet does a ton of gravel cover?"
+    a: "For typical crushed stone (1.4 tons per cubic yard) one ton covers about 114 sq ft at 2 in deep, 76 sq ft at 3 in, and 57 sq ft at 4 in. Lighter pea gravel covers a little more; heavier road base a little less. The coverage table next to the result recalculates for the gravel type you pick."
+  - q: "How many yards are in a ton of gravel?"
+    a: "Roughly 0.7 cubic yards. Divide 1 by the density in tons per cubic yard: 1 ÷ 1.4 ≈ 0.71 yd³ for crushed stone, 1 ÷ 1.35 ≈ 0.74 yd³ for pea gravel, 1 ÷ 1.7 ≈ 0.59 yd³ for dense-graded base."
+  - q: "How deep should a gravel driveway be?"
+    a: "Plan on 4 in of gravel for a light-use residential driveway and 6 in where trucks or frequent traffic are expected. Many contractors build in two layers: a 3–4 in base of crusher run or #411 compacted, then 2–3 in of #57 stone on top. Enter each layer as its own area with its own gravel type."
+  - q: "Should I order gravel by the yard or by the ton?"
+    a: "Order in whatever unit your supplier quotes; most quarries sell by the ton, many landscape yards by the cubic yard. The calculator gives both from the same density, so you can compare quotes. A single-axle dump truck carries about 5–7 tons (roughly 4–5 yd³); tandem trucks 10–14 tons."
+  - q: "How many bags of gravel equal one cubic yard?"
+    a: "54 bags of 0.5 cu ft, or 27 bags of 1 cu ft. Bagged gravel usually costs several times more per yard than bulk; once you need more than about one cubic yard, bulk delivery is almost always cheaper even with the delivery fee."
+  - q: "How much extra gravel should I order for compaction?"
+    a: "Add 5–10 % for uneven ground and spreading loss, and up to 15–20 % for base materials that you will compact with a plate compactor or roller. The calculator's default is 10 %; change it in the 'Extra for waste & compaction' field."
+  - q: "How much gravel do I need for a 10×10 area?"
+    a: "A 10 ft × 10 ft area (100 sq ft) needs 0.93 cubic yards at 3 in deep, 1.23 yd³ at 4 in, and 1.85 yd³ at 6 in. At 1.4 tons per cubic yard that is about 1.3, 1.75 and 2.6 tons. Add 10 % and you would order about 1 yd³, 1.5 yd³ and 2 yd³ respectively."
+---
+
+## How to use this gravel calculator
+
+1. **Pick a shape for the first area** — rectangle for a driveway or pad, circle for a fire pit or tree ring, triangle for a corner, or enter a total area you already know.
+2. **Enter the dimensions and depth.** Feet and inches are the default; type `12'6"` and the field understands it. Tap *m / cm* for metric.
+3. **Add more areas** if the project is not one simple shape: an L-shaped driveway is two rectangles; a path plus a patio are two areas. Totals are added for you.
+4. **Choose the gravel type.** The density it uses is shown next to the result. If your supplier gives a different figure, choose *Custom density* and type it in.
+5. **Read the result:** cubic yards to order (with the extra percentage included), U.S. tons, number of bags, and cost if you entered a price. Open *How it's calculated* to see every step with your numbers.
+
+## Gravel formula: from square feet to cubic yards and tons
+
+The calculation has three steps:
+
+1. **Area (sq ft)** = length × width for a rectangle, π × (diameter ÷ 2)² for a circle, ½ × base × height for a triangle.
+2. **Volume (cu yd)** = area × depth (in) ÷ 12 ÷ 27. Dividing by 12 converts inches to feet; dividing by 27 converts cubic feet to cubic yards, because a cubic yard is 3 × 3 × 3 ft.
+3. **Weight (tons)** = cubic yards × density in tons per cubic yard. Density in tons per cubic yard equals density in lb/ft³ × 27 ÷ 2,000.
+
+**Worked example.** A 10 ft × 10 ft pad, 3 in deep, crushed stone at 105 lb/ft³:
+
+- Area: 10 × 10 = 100 sq ft
+- Volume: 100 × 3 ÷ 12 = 25 cu ft = 25 ÷ 27 = **0.93 cu yd**
+- With 10 % extra: 0.93 × 1.10 = **1.02 cu yd** → order 1 to 1.5 yd³
+- Weight: 27.5 cu ft × 105 lb/ft³ = 2,888 lb = **1.44 tons**
+- Bags: 27.5 ÷ 0.5 = **55 bags** of 0.5 cu ft
+
+The same volume works for any loose material; only the density changes. For a plain volume without weight, use the <Calc slug="cubic-yards-calculator">cubic yards calculator</Calc>.
+
+## How much gravel do I need? Examples for common projects
+
+All figures use crushed stone at 1.42 tons per cubic yard and include 10 % extra.
+
+| Project | Size | Depth | Cubic yards to order | Tons | Bags (0.5 cu ft) |
+|---|---|---|---|---|---|
+| Single-car driveway | 20 × 10 ft | 4 in | 2.7 | 3.9 | 147 |
+| Double driveway | 40 × 18 ft | 4 in | 9.8 | 13.9 | 528 |
+| Garden path | 30 × 3 ft | 3 in | 0.9 | 1.3 | 50 |
+| Patio base | 12 × 12 ft | 4 in | 2.0 | 2.8 | 106 |
+| Fire pit ring | 8 ft diameter | 2 in | 0.3 | 0.5 | 19 |
+| French drain trench | 50 × 1 ft | 12 in | 2.0 | 2.9 | 110 |
+| Play area | 20 × 20 ft | 6 in | 8.1 | 11.6 | 440 |
+
+The trench and play-area rows show why depth matters more than people expect: doubling the depth doubles the order, while adding a foot to the width of a path changes it far less.
+
+## How deep should gravel be?
+
+| Use | Recommended depth | Notes |
+|---|---|---|
+| Decorative bed, weed suppression | 2 in | Over landscape fabric |
+| Garden path, walkway | 2–3 in | Pea gravel or decomposed granite |
+| Patio base under pavers | 4 in compacted | Crusher run or dense-graded base |
+| Driveway, light residential | 4 in | 2–3 in of #57 over a compacted base |
+| Driveway, trucks or heavy use | 6–8 in | Two or three compacted layers |
+| French drain, drainage trench | Fill to 2–3 in below grade | Clean, washed stone with no fines |
+| Play area | 6–9 in | Pea gravel; more depth around climbing equipment |
+
+If you are building a driveway in layers, enter each layer as a separate area with the matching gravel type — base material is heavier per yard than the top stone.
+
+## Gravel weight by type: tons per cubic yard
+
+Suppliers quote weight by the ton, so the density matters. These are ordering densities for loose, delivered material; compacted material in place is denser. The #57 figure sits between the DOT laboratory values (81 lb/ft³ loose, 92 lb/ft³ rodded) and the 1.4–1.5 t/yd³ that quarries use for ordering.
+
+| Gravel type | lb per cu ft | Tons per cu yd | Cu yd per ton |
+|---|---|---|---|
+| Crushed stone (#57) | 105 | 1.42 | 0.71 |
+| Pea gravel | 100 | 1.35 | 0.74 |
+| River rock | 105 | 1.42 | 0.71 |
+| Crusher run / #411 | 111 | 1.50 | 0.67 |
+| Dense-graded base (DGA) | 125 | 1.69 | 0.59 |
+| Bank run gravel | 120 | 1.62 | 0.62 |
+| Decomposed granite | 103 | 1.39 | 0.72 |
+| Marble chips | 95 | 1.28 | 0.78 |
+| Lava rock | 52 | 0.70 | 1.42 |
+| Riprap | 100 | 1.35 | 0.74 |
+
+Moisture adds weight: wet gravel can weigh 5–10 % more than the same stone dry. If a quote seems high after rain, that is usually why.
+
+## Yards or tons? Bags or bulk?
+
+**Yards vs. tons.** Landscape supply yards often sell by the cubic yard because they load with a bucket; quarries sell by the ton because trucks cross a scale. Both are fine — just compare quotes in the same unit. The calculator converts between them using the density shown, and the *Suggested order* figure rounds up to the next half yard, which is the smallest increment most yards deliver.
+
+**Bags vs. bulk.** A 0.5 cu ft bag holds about 50 lb of gravel; 54 of them make one cubic yard. Bags make sense below roughly half a yard, or when a truck cannot reach the spot. Above one yard, bulk delivery is almost always cheaper even with a delivery fee, and it saves carrying 50+ bags. Typical U.S. prices in 2026 run $40–$80 per cubic yard (or $30–$60 per ton) for common crushed stone in bulk, versus $4–$8 per 0.5 cu ft bag — that is $215–$430 per yard bagged.
+
+**Truck sizes.** A single-axle dump truck carries about 5–7 tons (4–5 yd³ of gravel); a tandem carries 10–14 tons. If your order lands just above a truck's capacity, trimming the depth slightly or adding a second small area later can save a second delivery fee.
+
+**Under a slab or pavers?** Gravel is only the base. For the concrete on top, use the <Calc slug="concrete-calculator">concrete calculator</Calc>; for covering beds instead of paths, the <Calc slug="mulch-calculator">mulch calculator</Calc> uses the same method with mulch densities. If the area is an irregular shape, the <Calc slug="square-footage-calculator">square footage calculator</Calc> helps you break it into simple pieces first.

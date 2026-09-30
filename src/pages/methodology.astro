@@ -1,0 +1,37 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro';
+const description =
+  'How we choose formulas, which primary sources we accept, how reference examples become automated tests, and how often data like densities is refreshed.';
+---
+
+<ServicePage title="Methodology: how our calculators are built and tested" {description} path="/methodology/" h1="Methodology" updated={new Date('2026-09-30')}>
+  <p>A calculator is only useful if its number is right. This page explains how we make sure of that.</p>
+
+  <h2>1. The formula comes from a primary source</h2>
+  <p>Before a calculator is built we write a research brief that records the formula and where it comes from. Acceptable sources, in order of preference:</p>
+  <ul>
+    <li><strong>Standards bodies and government:</strong> NIST (unit conversion factors, e.g. 1 lb = 0.45359237 kg exactly), U.S. Department of Labor and state labor agencies (overtime and wage rules), IRS and state revenue departments (tax tables), CDC and NIH (health reference data).</li>
+    <li><strong>Manufacturers and industry specifications:</strong> bag yields from concrete producers, aggregate densities from DOT specifications and suppliers, paint coverage from manufacturers.</li>
+    <li><strong>Peer-reviewed or textbook formulas</strong> with a citation, for topics like fitness and statistics.</li>
+  </ul>
+  <p>We never copy a formula from another calculator website. We do run the same inputs through several competing tools and explain any difference (rounding, waste allowances, density assumptions) in the brief.</p>
+
+  <h2>2. Reference examples become automated tests</h2>
+  <p>Each brief lists at least five worked examples, at least two of them taken directly from the primary source. These examples are written as automated tests that run every time the site is rebuilt. If a change breaks a result, the site does not publish.</p>
+  <p>Tests also cover edge cases: zero and negative inputs, very large numbers, mixed units, midnight and year boundaries for time and date tools, leap days and daylight-saving changes.</p>
+
+  <h2>3. Assumptions are visible and editable</h2>
+  <p>When a result depends on an assumption — the density of crushed stone, a 10 % waste allowance, a 40-hour work week — the page shows the value and lets you change it. The “How it's calculated” panel shows the formula with your numbers substituted so you can check it by hand.</p>
+
+  <h2>4. Rounding and precision</h2>
+  <p>Calculations run at full precision; only the displayed result is rounded. Quantities you buy in whole units (bags, gallons, sheets) are rounded <em>up</em>. Money is shown to the cent. Each page states its rounding rule in the formula section.</p>
+
+  <h2>5. Data that ages</h2>
+  <p>Tax tables, contribution limits, minimum wages, holidays and material prices change. Each such data set has a source, a “checked on” date, and a scheduled review (usually January, or when the law changes). The page's “Last updated” date reflects the latest verified change.</p>
+
+  <h2>6. Review for money and health topics</h2>
+  <p>Calculators about finance, taxes, health and fitness are reviewed by a qualified professional before publication and carry a disclaimer. Reviewers are named on the page and profiled on the <a href="/authors/">Authors</a> page.</p>
+
+  <h2>7. Corrections</h2>
+  <p>If you find an error, use the <a href="/contact/">contact page</a>. We verify, fix, add a test so it cannot return, and update the page date.</p>
+</ServicePage>

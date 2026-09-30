@@ -1,0 +1,34 @@
+---
+import { site, serviceLinks } from '@/data/site';
+import { registry } from '@/lib/registry';
+
+const groups = registry.categoriesWithContent('en').filter((g) => g.calculators.length > 0);
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-border bg-surface text-sm">
+  <div class="mx-auto max-w-6xl px-4 py-10 grid gap-8 md:grid-cols-[2fr_1fr]">
+    <nav aria-label="Categories">
+      <h2 class="text-base font-semibold mb-3">Calculators by category</h2>
+      <ul class="grid grid-cols-2 sm:grid-cols-3 gap-2 list-none m-0 p-0">
+        {groups.map((g) => (
+          <li><a href={`/${g.category.slug}/`} class="text-text no-underline hover:text-accent">{g.category.name}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <nav aria-label="About this site">
+      <h2 class="text-base font-semibold mb-3">{site.name}</h2>
+      <ul class="grid gap-2 list-none m-0 p-0">
+        {serviceLinks.map((l) => (
+          <li><a href={l.href} class="text-text no-underline hover:text-accent">{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <div class="border-t border-border">
+    <div class="mx-auto max-w-6xl px-4 py-4 text-muted flex flex-wrap gap-x-4 gap-y-1 justify-between">
+      <p class="m-0">© {site.foundedYear === year ? year : `${site.foundedYear}–${year}`} {site.name}. Results are estimates for planning; confirm quantities with your supplier or a professional.</p>
+      <p class="m-0">Formulas are tested against official sources — see <a href="/methodology/">Methodology</a>.</p>
+    </div>
+  </div>
+</footer>

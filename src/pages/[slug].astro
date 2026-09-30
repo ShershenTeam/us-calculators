@@ -1,0 +1,30 @@
+---
+/**
+ * Calculator pages, generated from the registry (published `en` only).
+ * Each calculator folder provides `island.astro`, a static wrapper that hydrates its Preact component.
+ */
+import type { GetStaticPaths } from 'astro';
+import { getEntry } from 'astro:content';
+import CalculatorPage from '@/layouts/CalculatorPage.astro';
+import { registry } from '@/lib/registry';
+
+export const getStaticPaths = (() =>
+  registry.published('en').map((meta) => ({ params: { slug: meta.slugs.en }, props: { id: meta.id } }))) satisfies GetStaticPaths;
+
+const { id } = Astro.props as { id: string };
+const meta = registry.byId(id);
+
+const entry = await getEntry('calculators', `en/${meta.slugs.en}`);
+if (!entry) throw new Error(`Missing content: src/content/calculators/en/${meta.slugs.en}.mdx`);
+if (entry.data.calculatorId !== meta.id) {
+  throw new Error(`${entry.id}: calculatorId "${entry.data.calculatorId}" does not match meta id "${meta.id}"`);
+}
+
+const islands = import.meta.glob<{ default: (props: Record<string, unknown>) => unknown }>('../calculators/*/island.astro', { eager: true });
+const Island = islands[`../calculators/${meta.id}/island.astro`]?.default;
+if (!Island) throw new Error(`${meta.id}: missing src/calculators/${meta.id}/island.astro`);
+---
+
+<CalculatorPage {meta} {entry} locale="en">
+  <Island locale="en" />
+</CalculatorPage>

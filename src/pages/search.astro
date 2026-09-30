@@ -1,0 +1,12 @@
+---
+import Base from '@/layouts/Base.astro';
+import PagefindSearch from '@/components/PagefindSearch.astro';
+
+const description =
+  'Search every calculator, converter and quick answer on the site by name or by what you want to work out, such as gravel tons or overtime pay.';
+---
+
+<Base title="Search calculators" {description} path="/search/" noindex mainClass="max-w-3xl">
+  <h1 class="text-3xl font-bold mt-4 mb-4">Search calculators</h1>
+  <PagefindSearch />
+</Base>

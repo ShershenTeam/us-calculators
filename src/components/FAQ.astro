@@ -1,0 +1,27 @@
+---
+import type { FaqItem } from '@/lib/seo';
+
+interface Props {
+  items: FaqItem[];
+  heading?: string;
+  id?: string;
+}
+const { items, heading = 'Frequently asked questions', id = 'faq' } = Astro.props;
+---
+
+<section aria-labelledby={`${id}-heading`} class="mt-10">
+  <h2 id={`${id}-heading`} class="text-2xl font-bold mb-3">{heading}</h2>
+  <div class="divide-y divide-border rounded-card border border-border bg-surface">
+    {
+      items.map((f, i) => (
+        <details class="group" open={i === 0}>
+          <summary class="cursor-pointer list-none px-4 py-3 min-h-12 flex items-center justify-between gap-3 font-medium">
+            <h3 class="text-base font-medium m-0">{f.q}</h3>
+            <span aria-hidden="true" class="text-muted transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+          </summary>
+          <div class="px-4 pb-4 text-[0.97rem] leading-relaxed" set:html={f.a} />
+        </details>
+      ))
+    }
+  </div>
+</section>

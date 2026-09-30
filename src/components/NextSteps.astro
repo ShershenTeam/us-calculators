@@ -1,0 +1,29 @@
+---
+import type { CalculatorLink } from '@/lib/registry';
+
+interface Props {
+  items: CalculatorLink[];
+  heading?: string;
+}
+const { items, heading = 'What to calculate next' } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <nav aria-label={heading} class="mt-6">
+      <p class="text-sm font-semibold text-muted mb-2 uppercase tracking-wide">{heading}</p>
+      <ul class="flex flex-wrap gap-2 list-none m-0 p-0">
+        {items.map((c) => (
+          <li>
+            <a
+              href={c.url}
+              class="inline-flex items-center min-h-12 px-4 rounded-full border border-accent text-accent font-medium no-underline hover:bg-accent-soft"
+            >
+              {c.name} →
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

@@ -1,0 +1,20 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro';
+import { site } from '@/data/site';
+const description =
+  'How California and other U.S. residents can opt out of the sale or sharing of personal information for targeted ads on this site, including GPC.';
+---
+
+<ServicePage title="Do Not Sell or Share My Personal Information" {description} path="/do-not-sell/" h1="Do Not Sell or Share My Personal Information" updated={new Date('2026-09-30')}>
+  <p>{site.name} does not sell personal information for money. However, cookies used by advertising partners to show you ads based on your activity on other sites may count as “selling” or “sharing” under the California Consumer Privacy Act (CCPA/CPRA) and similar state laws. You can opt out here.</p>
+
+  <h2>How to opt out</h2>
+  <ol>
+    <li><strong>Global Privacy Control (GPC):</strong> if your browser or extension sends the GPC signal, we treat it as an opt-out request automatically.</li>
+    <li><strong>Consent settings:</strong> where a consent banner is shown, choose “Do not sell or share” or disable personalized advertising. You can reopen it from the footer link at any time.</li>
+    <li><strong>Ad partner controls:</strong> <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google Ads Settings</a> and the <a href="https://optout.aboutads.info" rel="noopener" target="_blank">DAA opt-out page</a>.</li>
+    <li><strong>Email:</strong> send “Do not sell or share” to <a href={`mailto:${site.email}`}>{site.email}</a>. We may ask for information to verify the request.</li>
+  </ol>
+
+  <p>After you opt out you will still see ads, but they will not be based on your activity across other websites. Our full <a href="/privacy/">privacy policy</a> describes the data we collect and your other rights.</p>
+</ServicePage>

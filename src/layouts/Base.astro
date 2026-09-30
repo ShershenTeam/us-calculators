@@ -1,0 +1,37 @@
+---
+import Head from '@/components/Head.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  alternates?: Record<string, string>;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  locale?: 'en' | 'es';
+  /** Extra classes for <main>. */
+  mainClass?: string;
+}
+const { locale = 'en', mainClass = '', ...head } = Astro.props;
+const lang = locale === 'es' ? 'es-US' : 'en-US';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <Head {...head} locale={lang}>
+      <slot name="head" />
+    </Head>
+  </head>
+  <body class="bg-bg text-text">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-surface focus:px-4 focus:py-2 focus:rounded-md">Skip to content</a>
+    <Header />
+    <main id="main" class={`mx-auto max-w-6xl px-4 pt-4 pb-10 ${mainClass}`}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

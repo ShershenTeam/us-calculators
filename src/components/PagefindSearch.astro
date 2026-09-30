@@ -1,0 +1,42 @@
+---
+/**
+ * Mounts the Pagefind UI (static index built after `astro build`).
+ * Loaded only on /search/ and 404, never on calculator pages.
+ */
+interface Props {
+  id?: string;
+}
+const { id = 'pagefind' } = Astro.props;
+---
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<div id={id} class="pagefind-host" data-pagefind-ignore></div>
+
+<script is:inline define:vars={{ id }}>
+  (function () {
+    const host = document.getElementById(id);
+    const q = new URLSearchParams(location.search).get('q') || '';
+    const s = document.createElement('script');
+    s.src = '/pagefind/pagefind-ui.js';
+    s.onload = function () {
+      // eslint-disable-next-line no-undef
+      new PagefindUI({ element: '#' + id, showSubResults: false, showImages: false, autofocus: true });
+      if (q) {
+        const input = host.querySelector('input');
+        if (input) {
+          input.value = q;
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+    };
+    s.onerror = function () {
+      host.innerHTML = '<p>Search is temporarily unavailable. Browse the categories below instead.</p>';
+    };
+    document.head.appendChild(s);
+  })();
+</script>
+
+<style is:global>
+  .pagefind-host { --pagefind-ui-scale: 1; --pagefind-ui-primary: var(--accent); --pagefind-ui-text: var(--text);
+    --pagefind-ui-background: var(--surface); --pagefind-ui-border: var(--border); --pagefind-ui-font: inherit; }
+</style>

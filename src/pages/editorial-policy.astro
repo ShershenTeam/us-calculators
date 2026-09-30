@@ -1,0 +1,25 @@
+---
+import ServicePage from '@/layouts/ServicePage.astro';
+const description =
+  'Who writes and reviews our pages, how AI drafts are used, how advertising stays separate from content, and how corrections and updates are dated.';
+---
+
+<ServicePage title="Editorial policy" {description} path="/editorial-policy/" h1="Editorial policy" updated={new Date('2026-09-30')}>
+  <h2>Who writes</h2>
+  <p>Pages are researched and written by our editorial team and named contributors. Every page shows its author and the date it was last updated. Author profiles with qualifications are on the <a href="/authors/">Authors</a> page.</p>
+
+  <h2>Who reviews</h2>
+  <p>Every calculator is checked by a second person before publication: the math against the brief and tests, the text against the sources, and the page on a real phone. Topics that can affect your money or health (loans, taxes, paychecks, nutrition, fitness) are additionally reviewed by a professional with relevant credentials — for example a CPA or CFP for finance, a registered dietitian or physician for health. The reviewer is named on the page.</p>
+
+  <h2>How we use AI</h2>
+  <p>We use AI tools to draft text, summarize sources and generate test cases. Every published page is edited by a person, every number in the text is verified with the calculator itself, and every source is opened and checked. AI never decides a formula.</p>
+
+  <h2>Advertising and independence</h2>
+  <p>The site is funded by display advertising. Advertisers have no influence on which calculators we build, what they say, or the results they produce. Ads are clearly labelled and occupy reserved space below the result, never between the title and the calculator. Affiliate links, where used, are disclosed on the page.</p>
+
+  <h2>Updates and corrections</h2>
+  <p>Data that changes over time (tax tables, minimum wages, holidays, material prices) has a scheduled review date recorded in our methodology. When we correct an error we fix it, add a test so it cannot recur, and change the page's “Last updated” date. Report errors through the <a href="/contact/">contact page</a>.</p>
+
+  <h2>What we do not publish</h2>
+  <p>Pages without confirmed demand or without a real advantage over what already exists; thin pages that only repeat a number; and financial or medical tools without a qualified reviewer.</p>
+</ServicePage>
