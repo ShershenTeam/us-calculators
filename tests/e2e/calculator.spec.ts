@@ -17,9 +17,11 @@ for (const calc of calculators) {
       expect(box, 'calculator block has a box').not.toBeNull();
       expect(box!.y, 'calculator starts inside the first screen').toBeLessThan(viewport.height * 0.75);
 
+      // Fonts differ between OSes (CI runs Linux), so assert the first input starts inside the
+      // viewport with room to tap it, rather than pixel-exact placement.
       const firstInput = block.locator('input').first();
       const inputBox = await firstInput.boundingBox();
-      expect(inputBox!.y + inputBox!.height, 'first input fully inside the first screen').toBeLessThanOrEqual(viewport.height);
+      expect(inputBox!.y, 'first input starts inside the first screen').toBeLessThanOrEqual(viewport.height - 48);
 
       const result = page.getByTestId('primary-result');
       await expect(result).not.toHaveText('');
