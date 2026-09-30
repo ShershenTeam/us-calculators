@@ -35,7 +35,7 @@
 - `<Calc slug="…">` у MDX: невідомий слаг ламає збірку; слаг чернетки (`status.en: 'draft'`) рендериться текстом і стає посиланням автоматично після публікації.
 - Хаб категорії будується лише коли в ній є ≥ 1 опублікований калькулятор. Заглушки (`status: 'draft'`) не рендеряться, але потрібні для `related`/`next`.
 - Домен і бренд — плейсхолдери: `SITE_URL` у `.env`, `src/data/site.ts` (`TODO(owner)`), `public/robots.txt` (рядок Sitemap).
-- npm ≥ 9 потрібен (`npx npm@11 install`, якщо глобальний npm старий). `typescript` тримати на 6.x — `@astrojs/check` ще не підтримує 7.
+- Потрібні Node 22.12+ і npm ≥ 9 (на цьому ПК: Node 24.14, npm 11.20; npm 12 вимагає Node ≥ 24.15). `typescript` тримати на 6.x — `@astrojs/check` ще не підтримує 7. Перед `npm ci` зупиняй `astro preview`, інакше EPERM на `lightningcss*.node`.
 
 ## План сторінок
 - `Page_Plan_12_months.xlsx` — поіменний план (місяць 0 = запуск). Після публікації сторінки онови колонку Status (аркуш All pages).
