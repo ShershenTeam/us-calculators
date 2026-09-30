@@ -1,50 +1,51 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# US Calculators Site Constitution
+
+Static site of online calculators, unit converters and quick answers for Google Search in the United States. Revenue: display ads. Source of truth for strategy and rules: `CLAUDE.md`, `HANDOFF.md`, `docs/01`–`docs/10`. This constitution distils those documents into non-negotiable engineering principles.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Brief Before Build (NON-NEGOTIABLE)
+No page enters development without a completed brief (`docs/templates/page-brief.md`) produced by the checklist in `docs/09-page-brief-checklist.md`. The brief MUST name **3 concrete, verifiable advantages over the current top-3** competitor pages; otherwise the page is postponed. Ubersuggest is not used; sources are the collected data in `research/`, direct analysis of competitor pages, official formula sources, and (after launch) Google Search Console. Briefs live in `docs/briefs/<slug>.md`.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Pure Logic, Proven by Tests
+Every calculator's math lives in `src/calculators/<id>/logic.ts` as pure TypeScript functions with no UI or DOM dependency. Each `logic.test.ts` MUST contain ≥ 5 reference examples, of which ≥ 2 come from a primary source (NIST, U.S. DOL, IRS, CDC/NIH, manufacturer data). Edge cases (0, negative, very large, midnight, Feb 29, DST) are tested explicitly. A formula without a cited primary source does not ship.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Registry Generates Structure
+Menus, category hubs, breadcrumbs, related/next links, sitemap, hreflang and JSON-LD are generated from a single registry (`src/registry.ts` collecting every `meta.ts`). Nothing structural is hand-maintained. The build MUST fail on: duplicate slugs or primary keywords (cannibalisation), unknown `related`/`next`/`category` ids, or a `<Calc slug>` that does not exist. `related` links are made bidirectional automatically.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Mobile-First, Instant Result
+Designed at 360–430 px first. The calculator is visible above the fold at 375×667 with a sensible default example and a result shown immediately; recalculation happens on input, with no "Calculate" button. No ads or images between H1 and the calculator. Inputs use the correct `inputmode`, ≥ 16 px font, ≥ 48 px touch targets; no horizontal scroll. Every field has a visible `<label>`; results use `aria-live`.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Static, Fast, Server-Rendered
+Astro static output. Calculator islands are server-rendered to HTML (fields, labels and default result visible without JS) and hydrated with Preact. Budgets enforced in CI: JS ≤ 50 KB gzip per calculator page, Lighthouse mobile Performance ≥ 90, Accessibility ≥ 95, SEO = 100, CLS < 0.05. Ad slots reserve height. Fonts are local with `font-display: swap`.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VI. SEO Contract Per Page
+Flat, lowercase, hyphenated URLs with trailing slash (`/gravel-calculator/`), slug = primary query, never changed after publication without a 301 recorded in the registry. Frontmatter is schema-validated (zod): `title` ≤ 60, `description` 120–155, `h1`, `intro`, `faq[]` ≥ 4, `sources[]`, `author`, `updated`; `reviewer` is required when `ymyl: true`. Self-referencing canonical without query params; state lives in URL params only. JSON-LD: `WebApplication` + `BreadcrumbList` + `FAQPage` (only for visible FAQ).
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VII. Trust and YMYL Gates
+About, Methodology, Editorial Policy, Authors, Contact, Privacy, Terms and "Do Not Sell or Share" exist from day one. Finance, health and state-tax pages ship only with a qualified reviewer, `.gov`/`.edu` sources, a disclaimer and a data-update date, and not before their planned month (`Page_Plan_12_months.xlsx`, Legend → gates).
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### VIII. No Template Spam
+Value pages ("80 kg to lbs", "90 days from today") are created only with confirmed demand ≥ 1 000 searches/month and unique value beyond the number (neighbour table, percentile, calendar). Text is written per page for its intent; content that differs only by the calculator name is rejected. Text length follows intent (400–700 words simple, 1 000–1 800 complex), not a quota.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Technology Constraints
+
+- **Stack**: Astro (static) · Preact 10 islands · TypeScript strict · Tailwind CSS v4 · MDX content collections · Pagefind search · Vitest (logic) · Playwright (mobile smoke). Details and rationale: `docs/04-tech-and-deploy.md`.
+- **Layout**: one calculator = `src/calculators/<id>/{meta.ts, logic.ts, logic.test.ts, <Ui>.tsx}`; content = `src/content/calculators/<locale>/<slug>.mdx`; shared UI kit in `src/components/`; layouts in `src/layouts/`; routes generated in `src/pages/`.
+- **i18n**: en-US default without prefix; es-US under `/es/` with translated slugs, prepared in the registry but not published before month 5. hreflang only for pairs that exist.
+- **Secrets**: only in `.env` (git-ignored). No keys in code, docs or commits.
+- **Deployment**: static `dist/` via Dockerfile (node build → nginx) to Dokploy + Cloudflare, or Cloudflare Pages. Deploy only after green CI. No repository on GitHub, domain purchase or deployment without the owner's explicit decision (`HANDOFF.md` §5).
+
+## Development Workflow
+
+- Follow `docs/10-build-guide.md` stages A–H in order; do not start a stage before the previous stage's "Done when" criterion is met.
+- One branch per calculator (`calc/<id>`), changes via Pull Request with the checklist: tests, sources, FAQ, related/next, mobile screenshot, link to brief.
+- CI gates on every PR: `astro check`, `vitest`, `astro build`, `seo-lint`, `link-report`, Playwright mobile smoke, Lighthouse budgets. A PR with a deliberate error (title too long, broken `<Calc>`) MUST fail.
+- After a page is published, set Status = `Published` in `Page_Plan_12_months.xlsx` (sheet All pages).
+- Spec-driven development for every feature larger than a single page: `/speckit-specify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`. Specs live in `specs/`.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution operationalises `CLAUDE.md` and `docs/`; where they conflict, `CLAUDE.md` (owner's decisions) wins and this file is amended. Amendments require a version bump, a dated entry here and, when a principle changes, an update to the affected docs and templates. Every PR review verifies compliance with Principles I–VIII. Complexity beyond the documented stack must be justified in the plan's Complexity Tracking table.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-09-30 | **Last Amended**: 2026-09-30
