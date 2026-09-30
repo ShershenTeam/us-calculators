@@ -25,6 +25,9 @@ test('mobile menu opens and lists categories', async ({ page }) => {
   const burger = page.locator('header details > summary').first();
   if (await burger.isVisible()) {
     await burger.click();
+    const category = page.locator('header details[open] nav details > summary').first();
+    await expect(category).toBeVisible();
+    await category.click();
     await expect(page.locator('header nav[aria-label="Categories"] a[href="/construction/"]').first()).toBeVisible();
   }
 });

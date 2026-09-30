@@ -10,7 +10,9 @@ import { registry } from '@/lib/registry';
 import { jsonLd } from '@/lib/seo';
 import { site } from '@/data/site';
 
-const groups = registry.categoriesWithContent('en');
+const allGroups = registry.categoriesWithContent('en');
+const groups = allGroups.filter((g) => g.calculators.length > 0);
+const upcoming = allGroups.filter((g) => g.calculators.length === 0).map((g) => g.category.name);
 const published = registry.published('en');
 const title = `Free Calculators, Converters & Quick Answers | ${site.name}`;
 const description =
@@ -56,6 +58,7 @@ const description =
         ))
       }
     </ul>
+    {upcoming.length > 0 && <p class="text-sm text-muted mt-4">In preparation: {upcoming.join(', ')}.</p>}
   </section>
 
   {

@@ -6,7 +6,7 @@
 > **Будуєте сайт? Покрокова інструкція — [docs/10-build-guide.md](docs/10-build-guide.md).**
 > Для AI-асистента правила — у [CLAUDE.md](CLAUDE.md).
 
-## Статус (28.09.2026)
+## Статус (30.09.2026)
 
 | Етап | Стан |
 |---|---|
@@ -14,8 +14,12 @@
 | Стратегія, мови, архітектура, мобільна версія, SEO, технології | ✅ готово (документи в `docs/`) |
 | Поіменний план сторінок на 12 місяців | ✅ готово (`Page_Plan_12_months.xlsx`) |
 | Чекліст аналізу перед кожною сторінкою | ✅ готово (`docs/09`) |
+| **Етап B — каркас сайту** (Astro 7 + Preact + Tailwind 4, реєстр, макети, SEO, пошук, скрипти перевірок) | ✅ готово локально (`specs/001-site-skeleton-gravel/`) |
+| **Етап C — перший калькулятор** (`/gravel-calculator/`: бриф, логіка з 37 тестами, острівець, текст) | ✅ готово локально; Lighthouse mobile 99/100/100/100, JS 10 KB gzip |
 | Рішення власника: GitHub-акаунт, домен, розміщення | ⏳ очікується |
-| Код сайту, репозиторій, деплой | ⬜ не почато |
+| Етап D (CI), E (деплой), F (143 сторінки) | ⬜ не почато |
+
+Запуск локально: `npm install` → `npm run dev`. Усі перевірки: `npm run verify && npm run test:e2e`. Деталі — `specs/001-site-skeleton-gravel/quickstart.md`.
 
 ## План сторінок
 
@@ -63,7 +67,17 @@ Calculator/
 ├─ CLAUDE.md                   ← правила для AI-асистента
 ├─ README.md                   ← цей файл
 ├─ Page_Plan_12_months.xlsx    ← поіменний план сторінок (Summary / Launch / All pages / Legend)
-├─ docs/                       ← усі рішення та чеклісти (01–09) + шаблон брифу
+├─ package.json, astro.config.mjs, tsconfig.json, vitest.config.ts, playwright.config.ts
+├─ src/                        ← код сайту (Astro)
+│  ├─ calculators/<id>/        ← meta.ts, logic.ts, logic.test.ts, <Name>Calculator.tsx, island.astro
+│  ├─ content/                 ← MDX: calculators/en, categories/en, authors
+│  ├─ components/, layouts/, pages/, lib/ (registry, seo, url-state), data/ (site, categories), i18n/
+│  └─ styles/global.css        ← Tailwind 4 + дизайн-токени (світла/темна тема)
+├─ scripts/                    ← seo-lint, link-report, new-calculator (+ templates/), pagefind
+├─ tests/e2e/                  ← Playwright: мобільні smoke-тести
+├─ specs/                      ← spec-kit: spec, plan, research, data-model, tasks для кожної фічі
+├─ .specify/                   ← spec-kit: конституція, шаблони, скрипти
+├─ docs/                       ← усі рішення та чеклісти (01–10), шаблон брифу, briefs/ (брифи сторінок)
 ├─ research/                   ← дані досліджень і скрипти
 │  ├─ data/                    ← зібрані дані (CSV): сторінки конкурентів, запити, видача, план
 │  ├─ keywords_*.tsv           ← перевірені запити: англійська, іспанська, нові напрями

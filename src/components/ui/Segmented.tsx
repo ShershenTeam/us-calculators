@@ -21,7 +21,7 @@ export function Segmented<T extends string>(props: SegmentedProps<T>) {
   return (
     <div class="flex flex-col gap-1">
       <span class={props.hideLabel ? 'sr-only' : 'text-sm font-medium text-text'}>{props.label}</span>
-      <div role="radiogroup" aria-label={props.label} class={`inline-flex ${h} rounded-lg border border-border bg-surface-2 p-0.5`}>
+      <div role="radiogroup" aria-label={props.label} class={`inline-flex max-w-full min-w-0 ${h} rounded-lg border border-border bg-surface-2 p-0.5`}>
         {props.options.map((o) => {
           const active = o.value === props.value;
           return (
@@ -31,7 +31,7 @@ export function Segmented<T extends string>(props: SegmentedProps<T>) {
               role="radio"
               aria-checked={active}
               onClick={() => props.onChange(o.value)}
-              class={`flex-1 min-w-12 px-3 rounded-md text-sm font-medium inline-flex items-center justify-center gap-1.5 transition ${
+              class={`flex-1 min-w-0 px-2 sm:px-3 rounded-md text-sm font-medium inline-flex items-center justify-center gap-1.5 whitespace-nowrap transition ${
                 active ? 'bg-surface text-accent shadow-sm' : 'text-muted hover:text-text'
               }`}
             >

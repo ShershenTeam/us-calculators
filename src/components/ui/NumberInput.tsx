@@ -61,7 +61,7 @@ export function NumberInput(props: NumberInputProps) {
   };
 
   return (
-    <div class={`flex flex-col ${props.compact ? 'gap-0.5' : 'gap-1'}`}>
+    <div class={`flex flex-col min-w-0 ${props.compact ? 'gap-0.5' : 'gap-1'}`}>
       <label for={id} class="text-sm font-medium text-text">
         {props.label}
       </label>
@@ -75,13 +75,13 @@ export function NumberInput(props: NumberInputProps) {
           <button
             type="button"
             class="min-w-12 rounded-l-lg border border-border bg-surface-2 text-lg hover:bg-border"
-            aria-label={`Decrease ${props.label}`}
             onClick={() => stepBy(-1)}
           >
-            −
+            <span aria-hidden="true">−</span>
+            <span class="sr-only">Decrease {props.label}</span>
           </button>
         )}
-        <div class="relative flex-1">
+        <div class="relative flex-1 min-w-0">
           <input
             id={id}
             type="text"
@@ -106,10 +106,10 @@ export function NumberInput(props: NumberInputProps) {
           <button
             type="button"
             class="min-w-12 rounded-r-lg border border-border bg-surface-2 text-lg hover:bg-border"
-            aria-label={`Increase ${props.label}`}
             onClick={() => stepBy(1)}
           >
-            +
+            <span aria-hidden="true">+</span>
+            <span class="sr-only">Increase {props.label}</span>
           </button>
         )}
       </div>

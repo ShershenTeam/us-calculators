@@ -150,10 +150,10 @@ export default function GravelCalculator() {
   ];
 
   return (
-    <div class="grid gap-5 md:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] md:items-start">
-      <form class="grid gap-4" onSubmit={(e) => e.preventDefault()} aria-label="Gravel inputs">
-        <div class="flex items-center justify-between gap-3">
-          <span class="text-sm font-semibold">Areas to cover</span>
+    <div class="grid gap-5 grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] md:items-start">
+      <form class="grid gap-4 min-w-0 grid-cols-[minmax(0,1fr)]" onSubmit={(e) => e.preventDefault()} aria-label="Gravel inputs">
+        <div class="flex items-center justify-between gap-3 min-w-0">
+          <span class="text-sm font-semibold shrink-0">Areas to cover</span>
           <UnitToggle value={input.units} onChange={switchUnits} />
         </div>
 
@@ -162,8 +162,10 @@ export default function GravelCalculator() {
           return (
             <fieldset key={area.id} class="rounded-lg border border-border p-3 grid gap-3 min-w-0">
               <legend class="px-1 text-sm font-medium">Area {i + 1}</legend>
-              <div class="flex flex-wrap items-end justify-between gap-2">
-                <Segmented label={`Shape of area ${i + 1}`} hideLabel size="sm" value={area.shape} options={SHAPES} onChange={(shape) => updateArea(area.id, { shape, b: shape === 'rectangle' || shape === 'triangle' ? (area.b ?? 10) : undefined })} />
+              <div class="flex flex-wrap items-end justify-between gap-2 min-w-0">
+                <div class="min-w-0 max-w-full">
+                  <Segmented label={`Shape of area ${i + 1}`} hideLabel size="sm" value={area.shape} options={SHAPES} onChange={(shape) => updateArea(area.id, { shape, b: shape === 'rectangle' || shape === 'triangle' ? (area.b ?? 10) : undefined })} />
+                </div>
                 {input.areas.length > 1 && (
                   <button type="button" class="min-h-10 px-3 text-sm text-muted hover:text-error" onClick={() => removeArea(area.id)} aria-label={`Remove area ${i + 1}`}>
                     Remove
@@ -171,7 +173,7 @@ export default function GravelCalculator() {
                 )}
               </div>
 
-              <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3 sm:grid-cols-[repeat(3,minmax(0,1fr))]">
                 {area.shape === 'rectangle' && (
                   <>
                     <NumberInput label="Length" unit={lenUnit} feet={!metric} value={area.a} onChange={(a) => updateArea(area.id, { a })} error={res?.error && !(area.a >= 0) ? 'Enter 0 or more' : undefined} />
@@ -205,14 +207,14 @@ export default function GravelCalculator() {
           + Add another area
         </button>
 
-        <div class="grid gap-3 sm:grid-cols-2">
-          <div class="flex flex-col gap-1">
+        <div class="grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-[repeat(2,minmax(0,1fr))]">
+          <div class="flex flex-col gap-1 min-w-0">
             <label for="gravel-type" class="text-sm font-medium">
               Gravel type
             </label>
             <select
               id="gravel-type"
-              class="h-12 px-3 rounded-lg border border-border bg-surface text-base"
+              class="h-12 w-full min-w-0 max-w-full px-3 rounded-lg border border-border bg-surface text-base"
               value={input.gravelTypeId}
               onChange={(e) => {
                 const id = (e.currentTarget as HTMLSelectElement).value;
@@ -244,7 +246,7 @@ export default function GravelCalculator() {
 
         <details class="rounded-lg border border-border p-3">
           <summary class="cursor-pointer text-sm font-medium min-h-8 flex items-center">Price and bag size (optional)</summary>
-          <div class="grid gap-3 sm:grid-cols-3 mt-3">
+          <div class="grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-[repeat(3,minmax(0,1fr))] mt-3">
             {input.gravelTypeId === CUSTOM_TYPE_ID && (
               <NumberInput label="Extra for waste" unit="%" integer min={0} max={50} value={input.wastePct} onChange={(wastePct) => update({ wastePct })} />
             )}

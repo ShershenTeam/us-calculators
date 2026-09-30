@@ -17,7 +17,9 @@ export default defineConfig({
     timeout: 60_000,
   },
   projects: [
-    { name: 'iphone-se', use: { ...devices['iPhone SE'] } },
+    // iPhone SE viewport emulated in Chromium (WebKit needs a separate ~100 MB download; stage D may add it).
+    { name: 'iphone-se', use: { ...devices['iPhone SE (3rd gen)'], browserName: 'chromium' } },
+    { name: 'small-320', use: { ...devices['iPhone SE'], browserName: 'chromium' } },
     { name: 'pixel-7', use: { ...devices['Pixel 7'] } },
   ],
 });

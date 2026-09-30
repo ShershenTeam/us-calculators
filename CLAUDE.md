@@ -28,6 +28,15 @@
 - Mobile-first (`docs/06-mobile.md`): калькулятор на першому екрані 375 px, результат під час введення, без реклами над калькулятором.
 - Секрети лише в `.env` (у `.gitignore`). Не комітити ключі.
 
+## Розробка (стан на 30.09.2026: етапи B і C виконано локально)
+- Код сайту лежить у корені цієї папки поруч із `docs/` і `research/`. Spec-kit: `.specify/`, специфікації в `specs/` (`/speckit-specify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`). Конституція проєкту — `.specify/memory/constitution.md`.
+- Команди: `npm run dev` · `npm run check` · `npm test` · `npm run build` (astro build + pagefind) · `npm run seo-lint` · `npm run links` · `npm run test:e2e` (Playwright, iPhone SE 375 / Pixel 7 / 320 px) · `npm run verify` (усе разом, крім e2e) · `npm run new <id>` (скелет калькулятора).
+- Кожен калькулятор: `src/calculators/<id>/{meta.ts, logic.ts, logic.test.ts, <Name>Calculator.tsx, island.astro}` + `src/content/calculators/en/<slug>.mdx`. `island.astro` обов'язковий: Astro не гідрує динамічні framework-компоненти, тому обгортка статично імпортує острівець.
+- `<Calc slug="…">` у MDX: невідомий слаг ламає збірку; слаг чернетки (`status.en: 'draft'`) рендериться текстом і стає посиланням автоматично після публікації.
+- Хаб категорії будується лише коли в ній є ≥ 1 опублікований калькулятор. Заглушки (`status: 'draft'`) не рендеряться, але потрібні для `related`/`next`.
+- Домен і бренд — плейсхолдери: `SITE_URL` у `.env`, `src/data/site.ts` (`TODO(owner)`), `public/robots.txt` (рядок Sitemap).
+- npm ≥ 9 потрібен (`npx npm@11 install`, якщо глобальний npm старий). `typescript` тримати на 6.x — `@astrojs/check` ще не підтримує 7.
+
 ## План сторінок
 - `Page_Plan_12_months.xlsx` — поіменний план (місяць 0 = запуск). Після публікації сторінки онови колонку Status (аркуш All pages).
 - Перезбірка плану, якщо змінились правила: `python research/build_inventory.py`, потім `python research/export_plan.py`.
