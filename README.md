@@ -17,7 +17,8 @@
 | **Етап B — каркас сайту** (Astro 7 + Preact + Tailwind 4, реєстр, макети, SEO, пошук, скрипти перевірок) | ✅ готово локально (`specs/001-site-skeleton-gravel/`) |
 | **Етап C — перший калькулятор** (`/gravel-calculator/`: бриф, логіка з 37 тестами, острівець, текст) | ✅ готово локально; Lighthouse mobile 99/100/100/100, JS 10 KB gzip |
 | Рішення власника: GitHub-акаунт, домен, розміщення | ⏳ очікується |
-| Етап D (CI), E (деплой), F (143 сторінки) | ⬜ не почато |
+| **Етап D — CI** (`.github/workflows/ci.yml`: check → test → build → seo-lint → links → Playwright → Lighthouse budgets; шаблони PR/issue) | ✅ готово; захист гілки `main` — після `gh auth login` |
+| Етап E (деплой), F (143 сторінки) | ⬜ не почато |
 
 Запуск локально: `npm install` → `npm run dev`. Усі перевірки: `npm run verify && npm run test:e2e`. Деталі — `specs/001-site-skeleton-gravel/quickstart.md`.
 

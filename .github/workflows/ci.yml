@@ -1,0 +1,68 @@
+# Stage D (docs/10-build-guide.md): every PR and every push to main must pass
+# type check → unit tests → build → SEO lint → link report → mobile e2e → Lighthouse budgets.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE_URL: https://example.com
+      PAGEFIND_STRICT: '1'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type check (astro check)
+        run: npm run check
+
+      - name: Unit tests (vitest)
+        run: npm test
+
+      - name: Build (astro build + pagefind)
+        run: npm run build
+
+      - name: SEO lint
+        run: npm run seo-lint
+
+      - name: Internal link report
+        run: npm run links
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Mobile e2e (Playwright)
+        run: npm run test:e2e
+
+      - name: Lighthouse budgets (mobile)
+        run: npx --yes @lhci/cli@0.15.x autorun
+
+      - name: Upload Playwright report and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/**/*.png
+          retention-days: 14
+          if-no-files-found: ignore
