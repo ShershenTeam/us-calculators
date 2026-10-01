@@ -45,8 +45,17 @@
 - Перезбірка плану, якщо змінились правила: `python research/build_inventory.py`, потім `python research/export_plan.py`.
 - `research/harvest.py` збирав дані з журналів сесій на ПК власника. На іншому ПК він не потрібен: дані вже в `research/data/`.
 
+## GitHub (вирішено 1.10.2026)
+Канонічний репозиторій — організація **`ShershenTeam`**, репозиторій **`us-calculators`**, гілка за замовчуванням `main`:
+`https://github.com/ShershenTeam/us-calculators.git`
+
+Стара адреса `YevhenShershen/us-calculators` **не використовується**. Перед кожним пушем перевіряй `git remote -v`; якщо там старий власник — виправ:
+```
+git remote set-url origin https://github.com/ShershenTeam/us-calculators.git
+```
+
 ## Відкриті питання (див. HANDOFF.md, розділ 5)
-GitHub-акаунт і назва організації · домен · розміщення (Dokploy `49.12.4.84` + Cloudflare чи Cloudflare Pages) · рецензенти для фінансів і здоров'я. Не створюй репозиторій, не купуй домен і не деплой без відповіді власника.
+Домен · розміщення (Dokploy `49.12.4.84` + Cloudflare чи Cloudflare Pages) · рецензенти для фінансів і здоров'я. Не купуй домен і не деплой без відповіді власника.
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
