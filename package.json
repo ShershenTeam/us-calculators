@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/pagefind.mjs",
+    "build": "npm run fonts && astro build && node scripts/pagefind.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
@@ -18,7 +18,8 @@
     "seo-lint": "node scripts/seo-lint.mjs",
     "links": "node scripts/link-report.mjs",
     "new": "node scripts/new-calculator.mjs",
-    "verify": "npm run check && npm test && npm run build && npm run seo-lint && npm run links"
+    "verify": "npm run check && npm test && npm run build && npm run seo-lint && npm run links",
+    "fonts": "node scripts/sync-fonts.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
@@ -29,7 +30,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@fontsource/inter": "^5.2.5",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource-variable/public-sans": "^5.3.0",
+    "@fontsource/newsreader": "^5.3.0",
+    "@fontsource/public-sans": "^5.3.0",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.3.3",
     "node-html-parser": "^7.0.1",

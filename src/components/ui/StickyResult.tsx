@@ -35,12 +35,14 @@ export function StickyResult({ watchId, label, value, secondary }: StickyResultP
       <button
         type="button"
         onClick={jump}
-        class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-surface border-t border-border shadow-[0_-4px_16px_rgba(0,0,0,0.08)] text-left"
+        class="ruled-top w-full flex items-center justify-between gap-3 px-4 py-3 bg-surface border-t border-accent-line/60 shadow-float text-left"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
-        <span class="text-xs text-muted">{label}</span>
-        <span class="text-lg font-bold text-text">{value}</span>
-        {secondary && <span class="text-sm text-muted">{secondary}</span>}
+        <span class="font-mono text-[0.625rem] uppercase tracking-wider text-muted max-w-[9rem] leading-tight">{label}</span>
+        <span class="flex items-baseline gap-2 min-w-0">
+          <span class="figure text-xl font-semibold text-text">{value}</span>
+          {secondary && <span class="figure text-sm text-muted truncate">{secondary}</span>}
+        </span>
       </button>
     </div>
   );

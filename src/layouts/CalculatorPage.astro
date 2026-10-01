@@ -69,15 +69,34 @@ const ld = [
   <Breadcrumbs crumbs={crumbs} />
 
   <article>
-    <header class="mt-2 mb-3 md:mt-3 md:mb-4">
-      <h1 class="text-[1.75rem] md:text-4xl font-bold leading-tight">{entry.data.h1}</h1>
-      <p class="text-muted mt-1 text-[0.97rem] md:text-[1.05rem] leading-snug md:leading-normal max-w-3xl">{entry.data.intro}</p>
+    <header class="mt-2 mb-4 md:mt-3 md:mb-5">
+      <h1 class="text-[2rem] md:text-[2.75rem] font-semibold">{entry.data.h1}</h1>
+      <p class="text-muted mt-2 text-[1rem] md:text-[1.0625rem] leading-snug md:leading-normal max-w-[62ch]">
+        {entry.data.intro}
+      </p>
     </header>
 
     {/* Calculator island — first screen, nothing between the H1 and this block (docs/06 §1). */}
-    <section aria-label={`${meta.name} inputs and result`} data-calculator={meta.id} class="rounded-card border border-border bg-surface p-4 md:p-6 shadow-sm">
+    <section
+      aria-label={`${meta.name} inputs and result`}
+      data-calculator={meta.id}
+      class="sheet ruled-top rounded-card border border-border bg-surface px-4 pt-5 pb-4 md:px-6 md:pt-6 md:pb-5 shadow-card"
+    >
       <slot />
     </section>
+
+    <p class="mt-2 text-xs text-muted flex flex-wrap items-center gap-x-3 gap-y-1">
+      <span class="inline-flex items-center gap-1.5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+          ><path d="M20 6 9 17l-5-5" /></svg
+        >
+        Updates as you type
+      </span>
+      <span aria-hidden="true" class="text-rule">·</span>
+      <span>No sign-up</span>
+      <span aria-hidden="true" class="text-rule">·</span>
+      <span>Share the link and your numbers travel with it</span>
+    </p>
 
     <AdSlot id="after-result" />
 
@@ -91,10 +110,10 @@ const ld = [
 
     <RelatedCards items={related} />
 
-    <footer class="mt-10 pt-6 border-t border-border text-sm text-muted grid gap-4 md:grid-cols-2">
+    <footer class="mt-14 pt-6 border-t-2 border-border text-sm text-muted grid gap-6 md:grid-cols-2">
       <section>
-        <h2 class="text-base font-semibold text-text mb-2">Sources</h2>
-        <ol class="list-decimal ml-5 space-y-1">
+        <h2 class="rule-label mb-3">Sources</h2>
+        <ol class="list-decimal ml-5 space-y-1.5">
           {entry.data.sources.map((s) => (
             <li>
               <a href={s.url} rel="noopener nofollow" target="_blank">{s.name}</a>
@@ -104,6 +123,7 @@ const ld = [
         </ol>
       </section>
       <section>
+        <h2 class="rule-label mb-3">Who wrote this</h2>
         <p class="m-0">
           <strong class="text-text">Written by</strong> <a href="/authors/">{author.data.name}</a>, {author.data.role}.
           {reviewer && <span> <strong class="text-text">Reviewed by</strong> <a href="/authors/">{reviewer.data.name}</a>{reviewer.data.credentials ? `, ${reviewer.data.credentials}` : ''}.</span>}

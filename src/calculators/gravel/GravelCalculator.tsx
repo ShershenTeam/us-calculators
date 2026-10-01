@@ -150,30 +150,37 @@ export default function GravelCalculator() {
   ];
 
   return (
-    <div class="grid gap-5 grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] md:items-start">
+    <div class="grid gap-5 md:gap-6 grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] md:items-start">
       <form class="grid gap-4 min-w-0 grid-cols-[minmax(0,1fr)]" onSubmit={(e) => e.preventDefault()} aria-label="Gravel inputs">
-        <div class="flex items-center justify-between gap-3 min-w-0">
-          <span class="text-sm font-semibold shrink-0">Areas to cover</span>
+        <div class="flex items-center justify-between gap-4 min-w-0">
+          <span class="rule-label shrink-0 after:hidden">Areas to cover</span>
           <UnitToggle value={input.units} onChange={switchUnits} />
         </div>
 
         {input.areas.map((area, i) => {
           const res = result.areas.find((r) => r.id === area.id);
           return (
-            <fieldset key={area.id} class="rounded-lg border border-border p-3 grid gap-3 min-w-0">
-              <legend class="px-1 text-sm font-medium">Area {i + 1}</legend>
+            <fieldset key={area.id} class="rounded-card border border-border bg-surface-sunken p-3.5 grid gap-3.5 min-w-0">
+              <legend class="px-2 ml-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted bg-surface border border-border rounded-full py-0.5">
+                Area {i + 1}
+              </legend>
               <div class="flex flex-wrap items-end justify-between gap-2 min-w-0">
                 <div class="min-w-0 max-w-full">
                   <Segmented label={`Shape of area ${i + 1}`} hideLabel size="sm" value={area.shape} options={SHAPES} onChange={(shape) => updateArea(area.id, { shape, b: shape === 'rectangle' || shape === 'triangle' ? (area.b ?? 10) : undefined })} />
                 </div>
                 {input.areas.length > 1 && (
-                  <button type="button" class="min-h-10 px-3 text-sm text-muted hover:text-error" onClick={() => removeArea(area.id)} aria-label={`Remove area ${i + 1}`}>
+                  <button
+                    type="button"
+                    class="min-h-10 px-2 text-[0.8125rem] font-medium text-muted hover:text-error transition-colors"
+                    onClick={() => removeArea(area.id)}
+                    aria-label={`Remove area ${i + 1}`}
+                  >
                     Remove
                   </button>
                 )}
               </div>
 
-              <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3 sm:grid-cols-[repeat(3,minmax(0,1fr))]">
+              <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-3 sm:grid-cols-[repeat(3,minmax(0,1fr))] items-end">
                 {area.shape === 'rectangle' && (
                   <>
                     <NumberInput label="Length" unit={lenUnit} feet={!metric} value={area.a} onChange={(a) => updateArea(area.id, { a })} error={res?.error && !(area.a >= 0) ? 'Enter 0 or more' : undefined} />
@@ -195,7 +202,7 @@ export default function GravelCalculator() {
                 <NumberInput label="Depth" unit={depthUnit} value={area.depth} onChange={(depth) => updateArea(area.id, { depth })} error={res?.error && !(area.depth >= 0) ? 'Enter 0 or more' : undefined} hint={i === 0 ? (metric ? 'Paths 5–8 cm, driveways 10–15 cm' : 'Paths 2–3 in, driveways 4–6 in') : undefined} />
               </div>
               {res && !res.error && input.areas.length > 1 && (
-                <p class="m-0 text-xs text-muted">
+                <p class="figure m-0 text-[0.6875rem] font-mono text-muted">
                   {fmt(res.areaFt2, 1)} ft² · {fmt(res.volumeYd3, 2)} yd³
                 </p>
               )}
@@ -203,18 +210,22 @@ export default function GravelCalculator() {
           );
         })}
 
-        <button type="button" onClick={addArea} class="min-h-12 rounded-lg border border-dashed border-accent text-accent font-medium hover:bg-accent-soft">
+        <button
+          type="button"
+          onClick={addArea}
+          class="min-h-12 rounded-field border border-dashed border-accent-line text-accent text-[0.9375rem] font-semibold hover:bg-accent-soft hover:border-accent transition-colors"
+        >
           + Add another area
         </button>
 
         <div class="grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-[repeat(2,minmax(0,1fr))]">
-          <div class="flex flex-col gap-1 min-w-0">
-            <label for="gravel-type" class="text-sm font-medium">
+          <div class="flex flex-col gap-1.5 min-w-0">
+            <label for="gravel-type" class="text-[0.8125rem] font-semibold text-text leading-tight">
               Gravel type
             </label>
             <select
               id="gravel-type"
-              class="h-12 w-full min-w-0 max-w-full px-3 rounded-lg border border-border bg-surface text-base"
+              class="h-12 w-full min-w-0 max-w-full px-3 rounded-field border border-border bg-surface text-base font-medium outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/15"
               value={input.gravelTypeId}
               onChange={(e) => {
                 const id = (e.currentTarget as HTMLSelectElement).value;
@@ -228,7 +239,7 @@ export default function GravelCalculator() {
               ))}
               <option value={CUSTOM_TYPE_ID}>Custom density…</option>
             </select>
-            {type && <span class="text-xs text-muted">{type.note}</span>}
+            {type && <span class="text-[0.6875rem] leading-snug text-muted">{type.note}</span>}
           </div>
 
           {input.gravelTypeId === CUSTOM_TYPE_ID ? (
@@ -244,8 +255,16 @@ export default function GravelCalculator() {
           )}
         </div>
 
-        <details class="rounded-lg border border-border p-3">
-          <summary class="cursor-pointer text-sm font-medium min-h-8 flex items-center">Price and bag size (optional)</summary>
+        <details class="group rounded-card border border-border bg-surface-sunken p-3.5">
+          <summary class="cursor-pointer list-none text-[0.875rem] font-semibold min-h-9 flex items-center gap-2 text-text">
+            <span
+              aria-hidden="true"
+              class="grid place-items-center h-5 w-5 rounded-full border border-border text-[0.65rem] leading-none text-muted transition-transform duration-200 group-open:rotate-90"
+            >
+              ▸
+            </span>
+            Price and bag size <span class="font-normal text-muted">(optional)</span>
+          </summary>
           <div class="grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-[repeat(3,minmax(0,1fr))] mt-3">
             {input.gravelTypeId === CUSTOM_TYPE_ID && (
               <NumberInput label="Extra for waste" unit="%" integer min={0} max={50} value={input.wastePct} onChange={(wastePct) => update({ wastePct })} />
@@ -274,7 +293,7 @@ export default function GravelCalculator() {
         </details>
       </form>
 
-      <div class="grid gap-3 md:sticky md:top-20">
+      <div class="grid gap-3 md:sticky md:top-28">
         <ResultCard
           id="gravel-result"
           primaryLabel={`Gravel to order (incl. ${fmt(input.wastePct, 0)}% extra)`}

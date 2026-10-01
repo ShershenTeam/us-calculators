@@ -26,11 +26,14 @@
 - Адреси: нижній регістр, дефіси, слеш у кінці, плоскі (`/gravel-calculator/`). Після публікації не змінювати без 301-редиректу.
 - Логіка калькулятора — чисті функції, щонайменше 5 еталонних прикладів у тестах, з них ≥ 2 з першоджерела.
 - Mobile-first (`docs/06-mobile.md`): калькулятор на першому екрані 375 px, результат під час введення, без реклами над калькулятором.
+- **Дизайн — `docs/11-design-system.md` («Field Manual»).** Усі кольори, шрифти, радіуси, тіні й тривалості беруться з токенів `src/styles/global.css`. Нових значень «з голови» не вводь: потрібен відтінок — додай токен. Картка калькулятора завжди `CalculatorCard.astro`, поля — компоненти з `src/components/ui/`. Антиква (Newsreader) лише в `h1`–`h3`; цифри, що змінюються, — з класом `.figure`. Після візуальних правок перевіряй бюджети з §9 цього документа (Lighthouse моб.: Perf ≥ 90, A11y ≥ 95, SEO 100, CLS ≤ 0,05).
+- Шрифти самохостовані в `public/fonts/`; оновлення — `npm run fonts` (виконується автоматично в `npm run build`).
+- Встановлені скіли-помічники (не в git, пін у `skills-lock.json`, відновлення — `npx skills experimental_install`): `tailwind-design-system` (Tailwind v4, CSS-first токени), `ui-animation` (правила руху), `accessibility`, `core-web-vitals`, `performance`, `best-practices`, `seo`, `web-quality-audit` (аудит за Lighthouse). Глобальний `frontend-design` — для візуальних рішень.
 - Секрети лише в `.env` (у `.gitignore`). Не комітити ключі.
 
 ## Розробка (стан на 30.09.2026: етапи B і C виконано локально)
 - Код сайту лежить у корені цієї папки поруч із `docs/` і `research/`. Spec-kit: `.specify/`, специфікації в `specs/` (`/speckit-specify` → `/speckit-plan` → `/speckit-tasks` → `/speckit-implement`). Конституція проєкту — `.specify/memory/constitution.md`.
-- Команди: `npm run dev` · `npm run check` · `npm test` · `npm run build` (astro build + pagefind) · `npm run seo-lint` · `npm run links` · `npm run test:e2e` (Playwright, iPhone SE 375 / Pixel 7 / 320 px) · `npm run verify` (усе разом, крім e2e) · `npm run new <id>` (скелет калькулятора).
+- Команди: `npm run dev` · `npm run check` · `npm test` · `npm run build` (fonts + astro build + pagefind) · `npm run seo-lint` · `npm run links` · `npm run test:e2e` (Playwright, iPhone SE 375 / Pixel 7 / 320 px) · `npm run verify` (усе разом, крім e2e) · `npm run new <id>` (скелет калькулятора).
 - Кожен калькулятор: `src/calculators/<id>/{meta.ts, logic.ts, logic.test.ts, <Name>Calculator.tsx, island.astro}` + `src/content/calculators/en/<slug>.mdx`. `island.astro` обов'язковий: Astro не гідрує динамічні framework-компоненти, тому обгортка статично імпортує острівець.
 - `<Calc slug="…">` у MDX: невідомий слаг ламає збірку; слаг чернетки (`status.en: 'draft'`) рендериться текстом і стає посиланням автоматично після публікації.
 - Хаб категорії будується лише коли в ній є ≥ 1 опублікований калькулятор. Заглушки (`status: 'draft'`) не рендеряться, але потрібні для `related`/`next`.

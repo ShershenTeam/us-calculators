@@ -34,17 +34,54 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const require = createRequire(import.meta.url);
-let fontCache: Promise<ArrayBuffer> | undefined;
-function loadFont(): Promise<ArrayBuffer> {
-  fontCache ??= readFile(require.resolve('@fontsource/inter/files/inter-latin-700-normal.woff')).then(
-    (b) => b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer,
-  );
-  return fontCache;
+
+/** The two site faces, as static .woff files satori can parse. */
+const FONT_FILES = {
+  sans: '@fontsource/public-sans/files/public-sans-latin-600-normal.woff',
+  serif: '@fontsource/newsreader/files/newsreader-latin-600-normal.woff',
+} as const;
+
+const fontCache = new Map<keyof typeof FONT_FILES, Promise<ArrayBuffer>>();
+function loadFont(key: keyof typeof FONT_FILES): Promise<ArrayBuffer> {
+  let p = fontCache.get(key);
+  if (!p) {
+    p = readFile(require.resolve(FONT_FILES[key])).then(
+      (b) => b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength) as ArrayBuffer,
+    );
+    fontCache.set(key, p);
+  }
+  return p;
 }
+
+/* Colours mirror the light tokens in src/styles/global.css (docs/11 §2). */
+const PAPER = '#f8f6f0';
+const INK = '#17251f';
+const MUTED = '#5c6a63';
+const GREEN = '#0e5f4a';
+const RULE = '#cfcabb';
+const OCHRE = '#c07a16';
 
 export const GET: APIRoute = async ({ props }) => {
   const { title, kicker } = props as OgProps;
-  const fontData = await loadFont();
+  const [sans, serif] = await Promise.all([loadFont('sans'), loadFont('serif')]);
+
+  /** A row of ruler ticks across the top edge — the site's signature detail. */
+  const ticks = {
+    type: 'div',
+    props: {
+      style: { display: 'flex', gap: '11px', height: '14px' },
+      children: Array.from({ length: 64 }, (_, i) => ({
+        type: 'div',
+        props: {
+          style: {
+            width: '2px',
+            height: i % 5 === 0 ? '14px' : '7px',
+            background: i % 5 === 0 ? GREEN : RULE,
+          },
+        },
+      })),
+    },
+  };
 
   const svg = await satori(
     {
@@ -56,40 +93,85 @@ export const GET: APIRoute = async ({ props }) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '72px',
-          background: 'linear-gradient(135deg, #0b5642 0%, #0f6e56 60%, #15866a 100%)',
-          color: '#ffffff',
-          fontFamily: 'Inter',
+          padding: '64px 72px',
+          background: PAPER,
+          color: INK,
+          fontFamily: 'Public Sans',
+          borderBottom: `14px solid ${GREEN}`,
         },
         children: [
           {
             type: 'div',
             props: {
-              style: { display: 'flex', alignItems: 'center', gap: '18px', fontSize: '34px', opacity: 0.9 },
+              style: { display: 'flex', flexDirection: 'column', gap: '34px' },
               children: [
-                { type: 'div', props: { style: { width: '40px', height: '40px', borderRadius: '10px', background: '#dff3ea' } } },
-                { type: 'div', props: { children: kicker } },
+                ticks,
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '16px',
+                      fontSize: '25px',
+                      letterSpacing: '4px',
+                      textTransform: 'uppercase',
+                      color: MUTED,
+                    },
+                    children: [
+                      { type: 'div', props: { style: { width: '14px', height: '14px', background: OCHRE } } },
+                      { type: 'div', props: { children: kicker } },
+                    ],
+                  },
+                },
               ],
             },
           },
           {
             type: 'div',
             props: {
-              style: { fontSize: title.length > 40 ? '64px' : '80px', lineHeight: 1.1, fontWeight: 700, letterSpacing: '-0.02em' },
+              style: {
+                fontFamily: 'Newsreader',
+                fontSize: title.length > 44 ? '70px' : '86px',
+                lineHeight: 1.08,
+                letterSpacing: '-0.02em',
+                maxWidth: '950px',
+              },
               children: title,
             },
           },
           {
             type: 'div',
             props: {
-              style: { fontSize: '28px', opacity: 0.85 },
-              children: 'Free · instant result · works on your phone',
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '20px',
+                fontSize: '27px',
+                color: MUTED,
+                borderTop: `2px solid ${RULE}`,
+                paddingTop: '26px',
+              },
+              children: [
+                { type: 'div', props: { children: 'Free' } },
+                { type: 'div', props: { style: { color: RULE }, children: '·' } },
+                { type: 'div', props: { children: 'Answer as you type' } },
+                { type: 'div', props: { style: { color: RULE }, children: '·' } },
+                { type: 'div', props: { children: 'Formulas tested against official sources' } },
+              ],
             },
           },
         ],
       },
     },
-    { width: 1200, height: 630, fonts: [{ name: 'Inter', data: fontData, weight: 700, style: 'normal' }] },
+    {
+      width: 1200,
+      height: 630,
+      fonts: [
+        { name: 'Public Sans', data: sans, weight: 600, style: 'normal' },
+        { name: 'Newsreader', data: serif, weight: 600, style: 'normal' },
+      ],
+    },
   );
 
   const png = await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toBuffer();

@@ -17,7 +17,8 @@ export const site = {
   sameAs: [] as string[],
   /** Year the site went live; used in footer copyright. */
   foundedYear: 2026,
-  themeColor: { light: '#0f6e56', dark: '#101413' },
+  /** Browser UI colour — matches `--bg` in src/styles/global.css. */
+  themeColor: { light: '#f8f6f0', dark: '#121a18' },
 } as const;
 
 export const nav = {

@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
 
 const base =
-  'inline-flex items-center gap-1.5 min-h-11 px-3.5 rounded-lg border border-border bg-surface text-sm font-medium text-text hover:border-accent hover:text-accent disabled:opacity-50';
+  'inline-flex items-center gap-1.5 min-h-11 px-3.5 rounded-field border border-border bg-surface text-[0.8125rem] font-semibold text-text transition duration-150 hover:border-accent hover:text-accent hover:shadow-card disabled:opacity-50';
 
 function Btn({ onClick, children, label }: { onClick: () => void; children: ComponentChildren; label?: string }) {
   return (

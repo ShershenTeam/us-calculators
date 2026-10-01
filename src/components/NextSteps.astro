@@ -10,16 +10,17 @@ const { items, heading = 'What to calculate next' } = Astro.props;
 
 {
   items.length > 0 && (
-    <nav aria-label={heading} class="mt-6">
-      <p class="text-sm font-semibold text-muted mb-2 uppercase tracking-wide">{heading}</p>
+    <nav aria-label={heading} class="mt-8">
+      <p class="rule-label mb-3">{heading}</p>
       <ul class="flex flex-wrap gap-2 list-none m-0 p-0">
         {items.map((c) => (
           <li>
             <a
               href={c.url}
-              class="inline-flex items-center min-h-12 px-4 rounded-full border border-accent text-accent font-medium no-underline hover:bg-accent-soft"
+              class="group inline-flex items-center gap-2 min-h-12 px-4 rounded-field border border-border bg-surface text-text font-medium text-[0.9375rem] no-underline hover:border-accent hover:text-accent hover:shadow-card transition"
             >
-              {c.name} →
+              {c.name}
+              <span aria-hidden="true" class="text-accent-line transition-transform group-hover:translate-x-0.5">→</span>
             </a>
           </li>
         ))}

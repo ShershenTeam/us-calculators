@@ -24,3 +24,16 @@ Thumbs.db
 # scratch
 .tmp/
 .lighthouseci/
+
+# agent skills installed with `npx skills add` (design, a11y, Core Web Vitals).
+# Files live in .agents/, .claude/skills/ holds symlinks to them.
+# Restore on a new machine: npx skills experimental_install  (pins in skills-lock.json)
+.agents/
+.claude/skills/accessibility/
+.claude/skills/best-practices/
+.claude/skills/core-web-vitals/
+.claude/skills/performance/
+.claude/skills/seo/
+.claude/skills/tailwind-design-system/
+.claude/skills/ui-animation/
+.claude/skills/web-quality-audit/

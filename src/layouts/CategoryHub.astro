@@ -8,6 +8,7 @@ import { render } from 'astro:content';
 import Base from './Base.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import FAQ from '@/components/FAQ.astro';
+import CalculatorCard from '@/components/CalculatorCard.astro';
 import JsonLd from '@/components/JsonLd.astro';
 import TableWrap from '@/components/TableWrap.astro';
 import { registry } from '@/lib/registry';
@@ -45,25 +46,25 @@ const faqLd = jsonLd.faqPage(entry.data.faq.map((f) => ({ q: f.q, a: plainText(f
   </Fragment>
 
   <Breadcrumbs crumbs={crumbs} />
-  <header class="mt-4 mb-6">
-    <h1 class="text-3xl md:text-4xl font-bold leading-tight">{entry.data.h1}</h1>
-    <p class="text-lg text-muted mt-2 max-w-3xl">{entry.data.intro}</p>
+  <header class="mt-3 mb-8">
+    <h1 class="text-[2rem] md:text-[2.75rem] font-semibold">{entry.data.h1}</h1>
+    <p class="text-[1.05rem] md:text-lg text-muted mt-2.5 max-w-[62ch] leading-relaxed">{entry.data.intro}</p>
+    <p class="rule-label mt-5">
+      {calculators.length} calculator{calculators.length === 1 ? '' : 's'}
+    </p>
   </header>
 
   {
     grouped.map((g) => (
-      <section class="mb-8">
-        {g.name && <h2 class="text-xl font-semibold mb-3">{g.name}</h2>}
+      <section class="mb-10">
+        {g.name && <h2 class="text-xl font-semibold mb-4">{g.name}</h2>}
         {g.items.length === 0 ? (
           <p class="text-muted">Calculators for this category are being prepared.</p>
         ) : (
           <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none m-0 p-0">
-            {g.items.map((c) => (
+            {g.items.map((c, i) => (
               <li>
-                <a href={`/${c.slugs.en}/`} class="block h-full rounded-card border border-border bg-surface p-4 no-underline hover:border-accent hover:shadow-sm transition">
-                  <span class="block font-semibold text-text">{c.name}</span>
-                  <span class="block text-sm text-muted mt-1">{c.blurb}</span>
-                </a>
+                <CalculatorCard href={`/${c.slugs.en}/`} name={c.name} blurb={c.blurb} index={i} />
               </li>
             ))}
           </ul>
@@ -72,7 +73,7 @@ const faqLd = jsonLd.faqPage(entry.data.faq.map((f) => ({ q: f.q, a: plainText(f
     ))
   }
 
-  <div class="prose">
+  <div class="prose mt-12">
     <Content components={{ table: TableWrap }} />
   </div>
 

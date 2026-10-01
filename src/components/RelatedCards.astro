@@ -1,5 +1,6 @@
 ---
 import type { CalculatorLink } from '@/lib/registry';
+import CalculatorCard from '@/components/CalculatorCard.astro';
 
 interface Props {
   items: CalculatorLink[];
@@ -10,18 +11,12 @@ const { items, heading = 'Related calculators' } = Astro.props;
 
 {
   items.length > 0 && (
-    <section aria-labelledby="related-heading" class="mt-10">
-      <h2 id="related-heading" class="text-2xl font-bold mb-3">{heading}</h2>
+    <section aria-labelledby="related-heading" class="mt-12">
+      <h2 id="related-heading" class="text-2xl md:text-[1.75rem] font-semibold mb-4">{heading}</h2>
       <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none m-0 p-0">
-        {items.map((c) => (
+        {items.map((c, i) => (
           <li>
-            <a
-              href={c.url}
-              class="block h-full rounded-card border border-border bg-surface p-4 no-underline hover:border-accent hover:shadow-sm transition"
-            >
-              <span class="block font-semibold text-text">{c.name}</span>
-              <span class="block text-sm text-muted mt-1">{c.blurb}</span>
-            </a>
+            <CalculatorCard href={c.url} name={c.name} blurb={c.blurb} index={i} />
           </li>
         ))}
       </ul>

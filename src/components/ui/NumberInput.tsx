@@ -61,12 +61,12 @@ export function NumberInput(props: NumberInputProps) {
   };
 
   return (
-    <div class={`flex flex-col min-w-0 ${props.compact ? 'gap-0.5' : 'gap-1'}`}>
-      <label for={id} class="text-sm font-medium text-text">
+    <div class={`flex flex-col min-w-0 ${props.compact ? 'gap-0.5' : 'gap-1.5'}`}>
+      <label for={id} class="text-[0.8125rem] font-semibold text-text leading-tight">
         {props.label}
       </label>
       {props.hint && (
-        <span id={`${id}-hint`} class="text-xs text-muted -mt-0.5">
+        <span id={`${id}-hint`} class="text-[0.6875rem] leading-snug text-muted -mt-1">
           {props.hint}
         </span>
       )}
@@ -74,7 +74,7 @@ export function NumberInput(props: NumberInputProps) {
         {props.steppers && (
           <button
             type="button"
-            class="min-w-12 rounded-l-lg border border-border bg-surface-2 text-lg hover:bg-border"
+            class="min-w-12 rounded-l-field border border-border bg-surface-2 text-lg text-muted hover:bg-border hover:text-text transition-colors"
             onClick={() => stepBy(-1)}
           >
             <span aria-hidden="true">−</span>
@@ -92,12 +92,17 @@ export function NumberInput(props: NumberInputProps) {
             onBlur={onBlur}
             aria-invalid={invalid || undefined}
             aria-describedby={[props.hint ? `${id}-hint` : '', props.error || props.warning ? `${id}-msg` : ''].filter(Boolean).join(' ') || undefined}
-            class={`w-full h-12 px-3 ${props.unit ? 'pr-12' : ''} ${props.steppers ? 'rounded-none' : 'rounded-lg'} border ${
-              invalid ? 'border-error' : 'border-border'
-            } bg-surface text-text text-base focus:border-accent`}
+            class={`w-full h-12 px-3 font-medium ${props.unit ? 'pr-11' : ''} ${
+              props.steppers ? 'rounded-none' : 'rounded-field'
+            } border ${
+              invalid ? 'border-error bg-error/5' : 'border-border bg-surface'
+            } text-text text-base outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/15`}
           />
           {props.unit && (
-            <span aria-hidden="true" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted pointer-events-none">
+            <span
+              aria-hidden="true"
+              class="absolute right-0 top-1/2 -translate-y-1/2 h-[calc(100%-0.75rem)] grid place-items-center px-2.5 text-[0.75rem] font-mono text-muted border-l border-border pointer-events-none"
+            >
               {props.unit}
             </span>
           )}
@@ -105,7 +110,7 @@ export function NumberInput(props: NumberInputProps) {
         {props.steppers && (
           <button
             type="button"
-            class="min-w-12 rounded-r-lg border border-border bg-surface-2 text-lg hover:bg-border"
+            class="min-w-12 rounded-r-field border border-border bg-surface-2 text-lg text-muted hover:bg-border hover:text-text transition-colors"
             onClick={() => stepBy(1)}
           >
             <span aria-hidden="true">+</span>
@@ -114,7 +119,11 @@ export function NumberInput(props: NumberInputProps) {
         )}
       </div>
       {(props.error || props.warning) && (
-        <p id={`${id}-msg`} class={`text-xs m-0 ${props.error ? 'text-error' : 'text-warn'}`} role={props.error ? 'alert' : undefined}>
+        <p
+          id={`${id}-msg`}
+          class={`text-[0.6875rem] leading-snug m-0 ${props.error ? 'text-error font-medium' : 'text-warn'}`}
+          role={props.error ? 'alert' : undefined}
+        >
           {props.error ?? props.warning}
         </p>
       )}

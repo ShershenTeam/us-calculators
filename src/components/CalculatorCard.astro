@@ -1,0 +1,36 @@
+---
+/**
+ * One calculator in a grid — used by the home page, category hubs and the
+ * "Related calculators" block so every list of tools looks the same.
+ * Design: docs/11-design-system.md §5 (index card).
+ */
+interface Props {
+  href: string;
+  name: string;
+  blurb?: string;
+  /** Two-digit index printed in the corner, like an entry in a manual. */
+  index?: number;
+}
+const { href, name, blurb, index } = Astro.props;
+const no = index != null ? String(index + 1).padStart(2, '0') : undefined;
+---
+
+<a
+  href={href}
+  class="group relative flex h-full flex-col gap-1.5 rounded-card border border-border bg-surface p-4 pr-10 no-underline shadow-none transition duration-200 hover:border-accent-line hover:shadow-card focus-visible:border-accent"
+>
+  {no && (
+    <span
+      aria-hidden="true"
+      class="absolute right-3 top-3 font-mono text-[0.625rem] tracking-widest text-muted transition-colors group-hover:text-accent"
+      >{no}</span
+    >
+  )}
+  <span class="font-medium text-text leading-snug">{name}</span>
+  {blurb && <span class="text-[0.875rem] leading-snug text-muted">{blurb}</span>}
+  <span
+    aria-hidden="true"
+    class="absolute bottom-3 right-3 text-accent-line opacity-0 transition duration-200 group-hover:opacity-100 group-hover:translate-x-0.5"
+    >→</span
+  >
+</a>
