@@ -10,6 +10,7 @@
         "http://localhost/concrete-calculator/",
         "http://localhost/mulch-calculator/",
         "http://localhost/paint-calculator/",
+        "http://localhost/board-foot-calculator/",
         "http://localhost/construction/"
       ],
       "numberOfRuns": 2,
