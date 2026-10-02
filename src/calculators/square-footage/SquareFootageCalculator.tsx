@@ -238,7 +238,7 @@ export default function SquareFootageCalculator() {
   return (
     <div class="grid gap-5 md:gap-6 grid-cols-[minmax(0,1fr)] md:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] md:items-start">
       <form class="grid gap-4 min-w-0 grid-cols-[minmax(0,1fr)]" onSubmit={(e) => e.preventDefault()} aria-label="Square footage inputs">
-        <div class="flex items-center justify-between gap-4 min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 min-w-0">
           <span class="rule-label shrink-0 after:hidden">Rooms &amp; areas</span>
           <UnitToggle value={input.units} onChange={switchUnits} />
         </div>

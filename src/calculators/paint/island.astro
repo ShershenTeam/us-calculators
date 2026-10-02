@@ -1,0 +1,12 @@
+---
+/**
+ * Static wrapper so Astro can hydrate the Preact island (dynamic framework components
+ * cannot carry client:* directives). Every calculator folder has one of these.
+ */
+import PaintCalculator from './PaintCalculator';
+interface Props {
+  locale?: 'en' | 'es';
+}
+---
+
+<PaintCalculator client:load />
