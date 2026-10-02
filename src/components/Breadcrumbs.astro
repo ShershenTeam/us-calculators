@@ -7,19 +7,32 @@ interface Props {
 const { crumbs } = Astro.props;
 ---
 
+{/*
+  On phones the current page is not repeated: it is the H1 right below, and dropping it keeps the
+  trail on one line so the calculator stays on the first screen (docs/06 §1). BreadcrumbList JSON-LD
+  still lists every level.
+*/}
 <nav aria-label="Breadcrumb">
   <ol class="flex flex-wrap items-center gap-x-2 gap-y-0.5 m-0 p-0 list-none font-mono tracking-wide uppercase text-[0.6875rem]">
     {
       crumbs.map((c, i) => {
         const last = i === crumbs.length - 1;
         return (
-          <li class="flex items-center gap-2">
-            {last ? (
-              <span aria-current="page" class="text-muted">{c.name}</span>
-            ) : (
-              <a href={c.url} class="text-muted no-underline hover:text-accent">{c.name}</a>
+          <li class={`items-center gap-2 ${last && crumbs.length > 1 ? 'hidden sm:flex' : 'flex'}`}>
+            {i > 0 && (
+              <span aria-hidden="true" class="text-rule">
+                /
+              </span>
             )}
-            {!last && <span aria-hidden="true" class="text-rule">/</span>}
+            {last ? (
+              <span aria-current="page" class="text-muted">
+                {c.name}
+              </span>
+            ) : (
+              <a href={c.url} class="text-muted no-underline hover:text-accent">
+                {c.name}
+              </a>
+            )}
           </li>
         );
       })
