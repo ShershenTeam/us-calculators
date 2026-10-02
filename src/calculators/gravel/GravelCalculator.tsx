@@ -225,7 +225,7 @@ export default function GravelCalculator() {
             </label>
             <select
               id="gravel-type"
-              class="h-12 w-full min-w-0 max-w-full px-3 rounded-field border border-border bg-surface text-base font-medium outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/15"
+              class="h-12 w-full min-w-0 max-w-full pl-3 pr-9 rounded-field border border-border bg-surface text-base font-medium outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/15"
               value={input.gravelTypeId}
               onChange={(e) => {
                 const id = (e.currentTarget as HTMLSelectElement).value;
