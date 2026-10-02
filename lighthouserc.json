@@ -9,6 +9,7 @@
         "http://localhost/cubic-yards-calculator/",
         "http://localhost/concrete-calculator/",
         "http://localhost/mulch-calculator/",
+        "http://localhost/paint-calculator/",
         "http://localhost/construction/"
       ],
       "numberOfRuns": 2,
