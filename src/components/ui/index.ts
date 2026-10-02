@@ -7,3 +7,5 @@ export type { Step } from './ResultCard';
 export { ResultTable } from './ResultTable';
 export { StickyResult } from './StickyResult';
 export { CopyButton, ShareButton, PrintButton, CsvButton } from './ActionButtons';
+export { ShapePicker, SHAPE_ICONS } from './ShapePicker';
+export type { ShapeId, ShapeOption } from './ShapePicker';

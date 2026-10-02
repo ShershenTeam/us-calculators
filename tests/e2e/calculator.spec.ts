@@ -6,6 +6,9 @@ type Row = { url: string; status: string; locale: string };
 const manifest: Row[] = JSON.parse(readFileSync('dist/registry.json', 'utf8'));
 const calculators = manifest.filter((m) => m.status === 'published');
 
+/** Numeric fields only; free-text fields (e.g. a room name) are marked `data-kind="label"`. */
+const NUMERIC = '[data-calculator] input[type="text"]:not([data-kind="label"])';
+
 for (const calc of calculators) {
   test.describe(calc.url, () => {
     test('calculator is above the fold with a default result', async ({ page }) => {
@@ -32,7 +35,7 @@ for (const calc of calculators) {
       await page.goto(calc.url);
       const result = page.getByTestId('primary-result');
       const before = await result.textContent();
-      const input = page.locator('[data-calculator] input').first();
+      const input = page.locator(NUMERIC).first();
       await input.fill('');
       await input.fill('123');
       await expect(result).not.toHaveText(before!);
@@ -47,7 +50,7 @@ for (const calc of calculators) {
 
     test('inputs use a numeric keyboard and have labels', async ({ page }) => {
       await page.goto(calc.url);
-      const inputs = page.locator('[data-calculator] input[type="text"]');
+      const inputs = page.locator(NUMERIC);
       const n = await inputs.count();
       expect(n).toBeGreaterThan(0);
       for (let i = 0; i < n; i++) {
