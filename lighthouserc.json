@@ -8,6 +8,7 @@
         "http://localhost/square-footage-calculator/",
         "http://localhost/cubic-yards-calculator/",
         "http://localhost/concrete-calculator/",
+        "http://localhost/mulch-calculator/",
         "http://localhost/construction/"
       ],
       "numberOfRuns": 2,

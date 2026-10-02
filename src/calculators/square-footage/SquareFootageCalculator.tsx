@@ -46,6 +46,7 @@ const SHAPE_NAMES: Record<Shape, string> = {
   rectangle: 'rectangle',
   lshape: 'L-shape',
   circle: 'circle',
+  ring: 'ring',
   triangle: 'triangle',
   trapezoid: 'trapezoid',
   area: 'known area',

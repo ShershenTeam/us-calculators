@@ -154,7 +154,7 @@ export function calculateConcrete(input: ConcreteInput): ConcreteResult {
   // Common slips: a slab thickness typed in inches while the unit is feet, or a slab thinner than any mix allows.
   const warnings: string[] = [];
   for (const [i, e] of input.elements.entries()) {
-    if (e.kind !== 'shape' || e.shape === 'circle' || isBad(e.thickness)) continue;
+    if (e.kind !== 'shape' || e.shape === 'circle' || e.shape === 'ring' || isBad(e.thickness)) continue;
     const tIn = depthToFeet(e.thickness, depthUnit) * IN_PER_FT;
     const name = elements[i].name;
     if ((depthUnit === 'ft' || depthUnit === 'm') && tIn > 24) {

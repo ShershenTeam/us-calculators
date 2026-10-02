@@ -6,7 +6,7 @@ import type { JSX } from 'preact';
  * Shared by every area-based calculator, so the icons live here too.
  */
 
-export type ShapeId = 'rectangle' | 'lshape' | 'circle' | 'triangle' | 'trapezoid' | 'area';
+export type ShapeId = 'rectangle' | 'lshape' | 'circle' | 'ring' | 'triangle' | 'trapezoid' | 'area';
 
 const stroke = {
   fill: 'none',
@@ -32,6 +32,12 @@ export const SHAPE_ICONS: Record<ShapeId, JSX.Element> = {
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <circle cx="12" cy="12" r="8" {...stroke} />
       <path d="M4 12h16" {...stroke} stroke-dasharray="1.5 2" />
+    </svg>
+  ),
+  ring: (
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+      <circle cx="12" cy="12" r="8.5" {...stroke} />
+      <circle cx="12" cy="12" r="2.5" {...stroke} />
     </svg>
   ),
   triangle: (
@@ -69,7 +75,12 @@ export interface ShapePickerProps<T extends ShapeId> {
 }
 
 export function ShapePicker<T extends ShapeId>(props: ShapePickerProps<T>) {
-  const cols = props.options.length > 4 ? 'grid-cols-3 sm:grid-cols-6' : 'grid-cols-4';
+  const cols =
+    props.options.length > 6
+      ? 'grid-cols-4 sm:grid-cols-7'
+      : props.options.length > 4
+        ? 'grid-cols-3 sm:grid-cols-6'
+        : 'grid-cols-4';
   return (
     <div class="flex flex-col gap-1.5 min-w-0">
       <span class={props.hideLabel ? 'sr-only' : 'text-[0.8125rem] font-semibold text-text'}>{props.label}</span>

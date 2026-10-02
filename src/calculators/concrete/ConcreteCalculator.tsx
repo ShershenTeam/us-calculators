@@ -44,6 +44,7 @@ const SHAPES: { value: Shape; label: string }[] = [
   { value: 'rectangle', label: 'Rectangle' },
   { value: 'lshape', label: 'L-shape' },
   { value: 'circle', label: 'Column / hole' },
+  { value: 'ring', label: 'Hollow tube' },
   { value: 'triangle', label: 'Triangle' },
   { value: 'trapezoid', label: 'Trapezoid' },
   { value: 'area', label: 'Known area' },
@@ -58,6 +59,7 @@ const SHAPE_NAMES: Record<Shape, string> = {
   rectangle: 'rectangle',
   lshape: 'L-shape',
   circle: 'column / hole',
+  ring: 'ring',
   triangle: 'triangle',
   trapezoid: 'trapezoid',
   area: 'known area',
@@ -303,7 +305,7 @@ export default function ConcreteCalculator() {
           const err = (v: number | undefined) => (res?.error && !(v != null && v >= 0) ? 'Enter 0 or more' : undefined);
           const stairs = el.kind === 'stairs';
           const s = el.stairs ?? (metric ? DEFAULT_STAIRS_METRIC : DEFAULT_STAIRS_IMPERIAL);
-          const column = el.shape === 'circle';
+          const column = el.shape === 'circle' || el.shape === 'ring';
           return (
             <fieldset key={el.id} class="rounded-card border border-border bg-surface-sunken p-3.5 grid gap-3.5 min-w-0">
               <legend class="px-2 ml-1 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-muted bg-surface border border-border rounded-full py-0.5">
@@ -386,6 +388,12 @@ export default function ConcreteCalculator() {
                   )}
                   {el.shape === 'circle' && (
                     <NumberInput label="Diameter" hint={metric ? undefined : `Type 12" for inches`} unit={len} feet={!metric} value={el.a} onChange={(a) => updateEl(el.id, { a })} error={err(el.a)} />
+                  )}
+                  {el.shape === 'ring' && (
+                    <>
+                      <NumberInput label="Outer diameter" unit={len} feet={!metric} value={el.a} onChange={(a) => updateEl(el.id, { a })} error={err(el.a)} />
+                      <NumberInput label="Inner diameter" hint="The hollow core" unit={len} feet={!metric} value={el.b ?? NaN} onChange={(b) => updateEl(el.id, { b })} error={err(el.b)} />
+                    </>
                   )}
                   {el.shape === 'triangle' && (
                     <>

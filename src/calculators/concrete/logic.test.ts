@@ -152,3 +152,11 @@ describe('ordering', () => {
     expect(r.concreteWeightLb).toBeCloseTo(27 * DENSITY_LB_FT3, 9);
   });
 });
+
+describe('hollow tube (ring)', () => {
+  it('outer 2 ft, inner 1 ft, 3 ft tall = π × (1 − 0.25) × 3 = 7.07 ft³', () => {
+    const r = calculateConcrete(input({ depthUnit: 'ft', elements: [el({ shape: 'ring', a: 2, b: 1, thickness: 3 })] }));
+    expect(r.volumeFt3).toBeCloseTo(Math.PI * 0.75 * 3, 9);
+    expect(r.warnings).toHaveLength(0);
+  });
+});
