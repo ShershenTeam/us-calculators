@@ -49,6 +49,8 @@
 Канонічний репозиторій — організація **`ShershenTeam`**, репозиторій **`us-calculators`**, гілка за замовчуванням `main`:
 `https://github.com/ShershenTeam/us-calculators.git`
 
+**Процес змін (рішення власника, 2.10.2026):** кожна сторінка чи зміна — окрема гілка (`NNN-<slug>`, напр. `004-concrete-calculator`) і PR у `main` з описом за `.github/PULL_REQUEST_TEMPLATE.md`. Коли CI зелений, **Claude мержить PR сам** (`gh pr merge --rebase --delete-branch`) і переходить до наступного завдання, не питаючи окремо. Червоний CI — спершу полагодити. Мерж у `main` — не деплой: деплой лише після рішення власника про хостинг і домен.
+
 Стара адреса `YevhenShershen/us-calculators` **не використовується**. Перед кожним пушем перевіряй `git remote -v`; якщо там старий власник — виправ:
 ```
 git remote set-url origin https://github.com/ShershenTeam/us-calculators.git

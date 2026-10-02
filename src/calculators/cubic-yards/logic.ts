@@ -11,7 +11,7 @@
  */
 import type { AreaInput, AreaResult, CubicYardsInput, CubicYardsResult, DepthUnit, PriceUnit, Step, UnitSystem } from './types';
 import { fmt, round } from '@/lib/format';
-import { shapeAreaFt2, shapeExpression, M_PER_FT, IN_PER_FT, CM_PER_IN } from '@/lib/area';
+import { shapeAreaFt2, shapeExpression, depthToFeet, M_PER_FT, IN_PER_FT } from '@/lib/area';
 
 /* Exact factors — NIST SP 811 Appendix B. */
 export const FT3_PER_YD3 = 27;
@@ -45,35 +45,7 @@ export const ft3ToM3 = (ft3: number): number => ft3 * M3_PER_FT3;
 export const m3ToFt3 = (m3: number): number => m3 / M3_PER_FT3;
 export const yd3ToM3 = (yd3: number): number => yd3 * M3_PER_YD3;
 
-/** Depth in the chosen unit, in feet. */
-export function depthToFeet(depth: number, unit: DepthUnit): number {
-  switch (unit) {
-    case 'in':
-      return depth / IN_PER_FT;
-    case 'ft':
-      return depth;
-    case 'cm':
-      return depth / (CM_PER_IN * IN_PER_FT);
-    case 'm':
-      return depth / M_PER_FT;
-  }
-}
-
-/** Convert a depth value from one unit to another (used when the user switches units). */
-export function convertDepth(depth: number, from: DepthUnit, to: DepthUnit): number {
-  if (from === to || !Number.isFinite(depth)) return depth;
-  const ft = depthToFeet(depth, from);
-  switch (to) {
-    case 'in':
-      return ft * IN_PER_FT;
-    case 'ft':
-      return ft;
-    case 'cm':
-      return ft * IN_PER_FT * CM_PER_IN;
-    case 'm':
-      return ft * M_PER_FT;
-  }
-}
+export { depthToFeet, convertDepth } from '@/lib/area';
 
 /** Bag size entered in ft³ (imperial) or litres (metric), in ft³. */
 export function bagSizeFt3(size: number, units: UnitSystem): number {

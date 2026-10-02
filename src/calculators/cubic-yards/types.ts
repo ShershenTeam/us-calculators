@@ -1,9 +1,8 @@
-import type { AreaShape, ShapeDims, UnitSystem } from '@/lib/area';
+import type { AreaShape, DepthUnit, ShapeDims, UnitSystem } from '@/lib/area';
 
 export type { AreaShape as Shape, UnitSystem } from '@/lib/area';
 
-/** Depth (or height) unit: in / ft for imperial, cm / m for metric. */
-export type DepthUnit = 'in' | 'ft' | 'cm' | 'm';
+export type { DepthUnit } from '@/lib/area';
 export type PriceUnit = 'yd3' | 'ft3' | 'm3' | 'bag';
 
 export interface AreaInput extends ShapeDims {

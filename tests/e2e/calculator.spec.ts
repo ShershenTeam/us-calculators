@@ -9,6 +9,15 @@ const calculators = manifest.filter((m) => m.status === 'published');
 /** Numeric fields only; free-text fields (e.g. a room name) are marked `data-kind="label"`. */
 const NUMERIC = '[data-calculator] input[type="text"]:not([data-kind="label"])';
 
+/**
+ * Astro removes the `ssr` attribute from <astro-island> once the Preact island has hydrated.
+ * Typing before that is lost when hydration re-renders the fields — a race that showed up
+ * as a flaky failure under parallel load, so interaction tests wait for it.
+ */
+async function hydrated(page: import('@playwright/test').Page) {
+  await page.locator('[data-calculator] astro-island:not([ssr])').first().waitFor({ state: 'attached' });
+}
+
 for (const calc of calculators) {
   test.describe(calc.url, () => {
     test('calculator is above the fold with a default result', async ({ page }) => {
@@ -33,6 +42,7 @@ for (const calc of calculators) {
 
     test('result changes as the user types', async ({ page }) => {
       await page.goto(calc.url);
+      await hydrated(page);
       const result = page.getByTestId('primary-result');
       const before = await result.textContent();
       const input = page.locator(NUMERIC).first();
