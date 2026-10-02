@@ -16,14 +16,18 @@
  */
 import type { PriceUnit, RoomInput, RoomResult, SquareFootageInput, SquareFootageResult, Step, UnitSystem } from './types';
 import { fmt } from '@/lib/format';
+import {
+  shapeAreaFt2,
+  shapeExpression,
+  toSquareFeet,
+  ft2ToM2,
+  m2ToFt2,
+  FT2_PER_YD2,
+  FT2_PER_ACRE,
+} from '@/lib/area';
 
-/* Exact factors — NIST SP 811 Appendix B and NIST Handbook 44 Appendix C. */
-export const M_PER_FT = 0.3048;
-export const FT_PER_M = 1 / M_PER_FT;
-export const M2_PER_FT2 = M_PER_FT ** 2; // 0.09290304 exactly
-export const FT2_PER_M2 = 1 / M2_PER_FT2;
-export const FT2_PER_YD2 = 9;
-export const FT2_PER_ACRE = 43560;
+/* Shapes, units and exact NIST factors live in src/lib/area.ts (shared with cubic yards). */
+export { M_PER_FT, FT_PER_M, M2_PER_FT2, FT2_PER_M2, FT2_PER_YD2, FT2_PER_ACRE, toFeet, toSquareFeet, ft2ToM2, m2ToFt2 } from '@/lib/area';
 
 /** Waste presets by how the material is laid: Mullican Flooring (5 %, diagonal 10–15 %), Daltile (tile ~10 %). Brief §3. */
 export const WASTE_PRESETS = [
@@ -46,54 +50,14 @@ export const DEFAULT_INPUT: SquareFootageInput = {
 /* ---------- unit helpers ---------- */
 
 export const ft2ToYd2 = (ft2: number): number => ft2 / FT2_PER_YD2;
-export const ft2ToM2 = (ft2: number): number => ft2 * M2_PER_FT2;
-export const m2ToFt2 = (m2: number): number => m2 * FT2_PER_M2;
 export const ft2ToAcres = (ft2: number): number => ft2 / FT2_PER_ACRE;
 export const acresToFt2 = (acres: number): number => acres * FT2_PER_ACRE;
 
-/** A length entered in the active unit system, in feet. */
-export function toFeet(value: number, units: UnitSystem): number {
-  return units === 'metric' ? value * FT_PER_M : value;
-}
-
-/** An area entered in ft² or m², in ft². */
-export function toSquareFeet(area: number, units: UnitSystem): number {
-  return units === 'metric' ? m2ToFt2(area) : area;
-}
-
 /* ---------- geometry ---------- */
-
-function isBad(n: number | undefined): boolean {
-  return n == null || !Number.isFinite(n) || n < 0;
-}
 
 /** Area of one room in ft², or NaN with a message the field can show. */
 export function roomAreaFt2(room: RoomInput, units: UnitSystem): { areaFt2: number; error?: string } {
-  const ft = (n: number) => toFeet(n, units);
-  switch (room.shape) {
-    case 'rectangle':
-      if (isBad(room.a) || isBad(room.b)) return { areaFt2: NaN, error: 'Enter a length and a width of 0 or more.' };
-      return { areaFt2: ft(room.a) * ft(room.b!) };
-    case 'lshape':
-      if (isBad(room.a) || isBad(room.b) || isBad(room.c) || isBad(room.d)) {
-        return { areaFt2: NaN, error: 'Enter both parts of the L: length and width of each.' };
-      }
-      return { areaFt2: ft(room.a) * ft(room.b!) + ft(room.c!) * ft(room.d!) };
-    case 'circle':
-      if (isBad(room.a)) return { areaFt2: NaN, error: 'Enter a diameter of 0 or more.' };
-      return { areaFt2: Math.PI * (ft(room.a) / 2) ** 2 };
-    case 'triangle':
-      if (isBad(room.a) || isBad(room.b)) return { areaFt2: NaN, error: 'Enter a base and a height of 0 or more.' };
-      return { areaFt2: 0.5 * ft(room.a) * ft(room.b!) };
-    case 'trapezoid':
-      if (isBad(room.a) || isBad(room.b) || isBad(room.c)) {
-        return { areaFt2: NaN, error: 'Enter both parallel sides and the height.' };
-      }
-      return { areaFt2: ((ft(room.a) + ft(room.b!)) / 2) * ft(room.c!) };
-    case 'area':
-      if (isBad(room.a)) return { areaFt2: NaN, error: 'Enter an area of 0 or more.' };
-      return { areaFt2: toSquareFeet(room.a, units) };
-  }
+  return shapeAreaFt2(room, units);
 }
 
 /** Quantity clamped to a whole number of rooms, at least 1. */
@@ -191,7 +155,7 @@ export function calculateSquareFootage(input: SquareFootageInput): SquareFootage
     const qtyPart = r.qty > 1 ? ` × ${r.qty}` : '';
     steps.push({
       label: r.subtract ? `− ${r.name}` : r.name,
-      expression: `${shapeExpression(src, units)}${qtyPart}`,
+      expression: `${shapeExpression(src, units, fmt)}${qtyPart}`,
       value: `${r.subtract ? '−' : ''}${n(Math.abs(r.areaFt2))} ${sq}`,
     });
   }
@@ -252,23 +216,4 @@ export function calculateSquareFootage(input: SquareFootageInput): SquareFootage
 
 export function priceUnitLabel(unit: PriceUnit): string {
   return unit === 'yd2' ? 'yd²' : unit === 'm2' ? 'm²' : 'ft²';
-}
-
-function shapeExpression(room: RoomInput, units: UnitSystem): string {
-  const u = units === 'metric' ? 'm' : 'ft';
-  const f = (n: number | undefined) => `${fmt(n ?? 0, 2)} ${u}`;
-  switch (room.shape) {
-    case 'rectangle':
-      return `${f(room.a)} × ${f(room.b)}`;
-    case 'lshape':
-      return `${f(room.a)} × ${f(room.b)} + ${f(room.c)} × ${f(room.d)}`;
-    case 'circle':
-      return `π × (${f(room.a)} ÷ 2)²`;
-    case 'triangle':
-      return `½ × ${f(room.a)} × ${f(room.b)}`;
-    case 'trapezoid':
-      return `(${f(room.a)} + ${f(room.b)}) ÷ 2 × ${f(room.c)}`;
-    case 'area':
-      return units === 'metric' ? `${fmt(room.a, 2)} m² → ft²` : `${fmt(room.a, 2)} ft²`;
-  }
 }

@@ -6,6 +6,7 @@
         "http://localhost/",
         "http://localhost/gravel-calculator/",
         "http://localhost/square-footage-calculator/",
+        "http://localhost/cubic-yards-calculator/",
         "http://localhost/construction/"
       ],
       "numberOfRuns": 2,

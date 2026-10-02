@@ -1,5 +1,5 @@
-export type Shape = 'rectangle' | 'lshape' | 'circle' | 'triangle' | 'trapezoid' | 'area';
-export type UnitSystem = 'imperial' | 'metric';
+export type { AreaShape as Shape, UnitSystem } from '@/lib/area';
+import type { AreaShape as Shape, UnitSystem } from '@/lib/area';
 export type PriceUnit = 'ft2' | 'yd2' | 'm2';
 
 export interface RoomInput {

@@ -14,6 +14,7 @@ import {
 } from '@/components/ui';
 import { fmt, fmtMoney } from '@/lib/format';
 import { readParams, writeParams, shareUrl, compact } from '@/lib/url-state';
+import { withShape, SHAPE_CODES, CODE_SHAPES } from '@/lib/area';
 import {
   calculateSquareFootage,
   DEFAULT_INPUT,
@@ -53,30 +54,8 @@ const SHAPE_NAMES: Record<Shape, string> = {
 let seq = 1;
 const newId = () => `r${Date.now().toString(36)}${seq++}`;
 
-/** Sensible starting dimensions when the user switches a room to another shape. */
-function withShape(room: RoomInput, shape: Shape): RoomInput {
-  const a = Number.isFinite(room.a) ? room.a : 10;
-  const b = Number.isFinite(room.b ?? NaN) ? room.b! : 10;
-  switch (shape) {
-    case 'rectangle':
-      return { ...room, shape, a, b, c: undefined, d: undefined };
-    case 'lshape':
-      return { ...room, shape, a, b, c: room.c ?? 6, d: room.d ?? 6 };
-    case 'circle':
-      return { ...room, shape, a, b: undefined, c: undefined, d: undefined };
-    case 'triangle':
-      return { ...room, shape, a, b, c: undefined, d: undefined };
-    case 'trapezoid':
-      return { ...room, shape, a, b, c: room.c ?? 8, d: undefined };
-    case 'area':
-      return { ...room, shape, a: a * b, b: undefined, c: undefined, d: undefined };
-  }
-}
-
 /* ---------- URL state ---------- */
 
-const SHAPE_CODES: Record<Shape, string> = { rectangle: 'rect', lshape: 'l', circle: 'circ', triangle: 'tri', trapezoid: 'trap', area: 'area' };
-const CODE_SHAPES: Record<string, Shape> = Object.fromEntries(Object.entries(SHAPE_CODES).map(([k, v]) => [v, k as Shape]));
 
 function encode(input: SquareFootageInput): URLSearchParams {
   const p = new URLSearchParams();
