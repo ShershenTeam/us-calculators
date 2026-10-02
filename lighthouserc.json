@@ -11,6 +11,7 @@
         "http://localhost/mulch-calculator/",
         "http://localhost/paint-calculator/",
         "http://localhost/board-foot-calculator/",
+        "http://localhost/percentage-calculator/",
         "http://localhost/construction/"
       ],
       "numberOfRuns": 2,
