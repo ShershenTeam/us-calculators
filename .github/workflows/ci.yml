@@ -17,15 +17,16 @@ permissions:
 jobs:
   check:
     name: check
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moves to 26.04 on 2026-10-19; bump deliberately after Playwright supports it.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       SITE_URL: https://example.com
       PAGEFIND_STRICT: '1'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -58,7 +59,7 @@ jobs:
 
       - name: Upload Playwright report and screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: |
