@@ -6,6 +6,8 @@
 
 export type UnitSystem = 'imperial' | 'metric';
 export type AreaShape = 'rectangle' | 'lshape' | 'circle' | 'triangle' | 'trapezoid' | 'area';
+/** Depth / thickness / height unit: in · ft (imperial), cm · m (metric). */
+export type DepthUnit = 'in' | 'ft' | 'cm' | 'm';
 
 export const M_PER_FT = 0.3048;
 export const FT_PER_M = 1 / M_PER_FT;
@@ -40,6 +42,36 @@ export function toSquareFeet(area: number, units: UnitSystem): number {
 }
 
 export const ft2ToM2 = (ft2: number): number => ft2 * M2_PER_FT2;
+
+/** A depth in the chosen unit, in feet. */
+export function depthToFeet(depth: number, unit: DepthUnit): number {
+  switch (unit) {
+    case 'in':
+      return depth / IN_PER_FT;
+    case 'ft':
+      return depth;
+    case 'cm':
+      return depth / (CM_PER_IN * IN_PER_FT);
+    case 'm':
+      return depth / M_PER_FT;
+  }
+}
+
+/** Convert a depth between units (used when the user switches the unit). */
+export function convertDepth(depth: number, from: DepthUnit, to: DepthUnit): number {
+  if (from === to || !Number.isFinite(depth)) return depth;
+  const ft = depthToFeet(depth, from);
+  switch (to) {
+    case 'in':
+      return ft * IN_PER_FT;
+    case 'ft':
+      return ft;
+    case 'cm':
+      return ft * IN_PER_FT * CM_PER_IN;
+    case 'm':
+      return ft * M_PER_FT;
+  }
+}
 export const m2ToFt2 = (m2: number): number => m2 * FT2_PER_M2;
 
 function isBad(n: number | undefined): boolean {

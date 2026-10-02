@@ -61,7 +61,9 @@ export function NumberInput(props: NumberInputProps) {
   };
 
   return (
-    <div class={`flex flex-col min-w-0 ${props.compact ? 'gap-0.5' : 'gap-1.5'}`}>
+    // A stepper field needs room for − value +: in a two-column grid on a phone it takes the whole row,
+    // otherwise at 320 px the value is squeezed out between the buttons.
+    <div class={`flex flex-col min-w-0 ${props.compact ? 'gap-0.5' : 'gap-1.5'} ${props.steppers ? 'col-span-full sm:col-span-1' : ''}`}>
       <label for={id} class="text-[0.8125rem] font-semibold text-text leading-tight">
         {props.label}
       </label>
@@ -70,7 +72,7 @@ export function NumberInput(props: NumberInputProps) {
           {props.hint}
         </span>
       )}
-      <div class="flex items-stretch">
+      <div class={`flex items-stretch ${props.steppers ? "max-w-[15rem] sm:max-w-none" : ""}`}>
         {props.steppers && (
           <button
             type="button"
@@ -92,7 +94,7 @@ export function NumberInput(props: NumberInputProps) {
             onBlur={onBlur}
             aria-invalid={invalid || undefined}
             aria-describedby={[props.hint ? `${id}-hint` : '', props.error || props.warning ? `${id}-msg` : ''].filter(Boolean).join(' ') || undefined}
-            class={`w-full h-12 px-3 font-medium ${props.unit ? 'pr-11' : ''} ${
+            class={`w-full h-12 ${props.steppers ? 'px-1 text-center' : 'px-3'} font-medium ${props.unit ? 'pr-11' : ''} ${
               props.steppers ? 'rounded-none' : 'rounded-field'
             } border ${
               invalid ? 'border-error bg-error/5' : 'border-border bg-surface'

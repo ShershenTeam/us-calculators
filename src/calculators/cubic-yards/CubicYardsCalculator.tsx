@@ -238,8 +238,8 @@ export default function CubicYardsCalculator() {
         { value: 'bag', label: 'per bag' },
       ];
 
-  const primary = `${fmt(result.orderYd3, 2)} yd³`;
-  const metricPrimary = `${fmt(result.orderM3, 2)} m³`;
+  const primary = `${fmt(result.orderYd3, 2, true)} yd³`;
+  const metricPrimary = `${fmt(result.orderM3, 2, true)} m³`;
   const bagLabel = metric ? `${fmt(input.bagSize, 0)} L bags` : `${fmt(input.bagSize, 2)} ft³ bags`;
 
   const summary = [

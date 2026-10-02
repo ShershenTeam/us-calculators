@@ -1,17 +1,27 @@
 import { defineCalculator } from '@/lib/define-calculator';
 
-// Draft stub so links and related cards resolve; built in stage F (Page_Plan row for concrete-calculator).
 export default defineCalculator({
   id: 'concrete',
   name: 'Concrete Calculator',
-  blurb: 'Cubic yards and 40/60/80 lb bags for slabs, footings and posts.',
+  blurb: 'Cubic yards and 40–90 lb bags for slabs, footings, post holes and stairs.',
   slugs: { en: 'concrete-calculator' },
   primaryKeyword: 'concrete calculator',
   category: 'construction',
-  related: ['gravel'],
-  next: ['gravel'],
-  aliases: [],
+  related: ['cubic-yards', 'square-footage', 'gravel', 'mulch', 'topsoil'],
+  next: ['gravel', 'cubic-yards', 'square-footage'],
+  aliases: [
+    'concrete slab calculator',
+    'concrete bag calculator',
+    'how many bags of concrete do i need',
+    'cement calculator',
+    'quikrete calculator',
+    'concrete yardage calculator',
+    'concrete footing calculator',
+    'concrete stairs calculator',
+    'post hole concrete calculator',
+  ],
   ymyl: false,
-  status: { en: 'draft' },
+  status: { en: 'published' },
   applicationCategory: 'UtilitiesApplication',
+  island: 'ConcreteCalculator',
 });
